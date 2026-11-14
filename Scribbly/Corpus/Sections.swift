@@ -154,13 +154,9 @@ struct CollectionsSection: View {
         ScrollView {
             VStack(spacing: 0) {   // no gap above the banner
             PageHeader(title: "Batches",
-                       subtitle: store.collections.isEmpty ? "Every fetch you've run" : "\(store.collections.count) batches · one per fetch",
+                       subtitle: store.collections.isEmpty ? "" : "\(store.collections.count) batches",
                        back: { BottomChrome.shared.moreSub = nil })
             LazyVStack(spacing: 10) {
-                // What a batch is, in one line.
-                Text("A batch is one fetch: a channel, a playlist, or a set of links you pasted. Each shows how much of it is saved.")
-                    .font(.geist(size: 12.5)).foregroundColor(P.textSec)
-                    .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 18).padding(.top, 4)
                 ListSearch(placeholder: "Search \(store.collections.count) batches…", text: $q,
                            sorts: ["Newest", "Oldest", "Most videos", "A–Z"], sort: $sort)
                 FilterSortRow(filters: states, filter: $state)
@@ -317,7 +313,7 @@ struct QuerySection: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {   // no gap above the banner
-            PageHeader(title: "Query", subtitle: "Titles · summaries · transcripts · tags",
+            PageHeader(title: "Query", subtitle: "Search every word you've saved",
                        back: { BottomChrome.shared.moreSub = nil })
             VStack(spacing: 14) {
                 HStack {
@@ -476,7 +472,7 @@ struct IngestSection: View {
 
                 // ── Hero: the same pillar banner as every page, with the wordmark,
                 // the line, and what the library holds.
-                PageHeader(title: "Every word.\nOne library.", subtitle: "Transcribed · Summarized · Searchable",
+                PageHeader(title: "Say it once.\nFind it forever.", subtitle: "Transcribed · Summarized · Searchable",
                            trailing: homeSavedLabel)
                     .id(ScrollTop.anchor)
                     .task { if let store { await store.loadRecent() } }
@@ -596,7 +592,7 @@ struct IngestSection: View {
                     if progressActive && showWalkAway {
                         HStack(spacing: 8) {
                             Image(systemName: "checkmark.seal.fill").foregroundColor(P.good).font(.geist(size: 13))
-                            Text("Queue and walk away — processing runs on the server. Lock the phone, close the app; it keeps going.")
+                            Text("This keeps going on the server — you can lock your phone or close the app.")
                                 .font(.geist(size: 12)).foregroundColor(P.textSec)
                             Spacer()
                             Button { showWalkAway = false } label: {
@@ -1351,8 +1347,11 @@ private struct RecentList: View {
             VStack(spacing: 0) {
                 if filter == .all {
                 // ── Live: what's processing right now
-                ForEach(up.pendingItems()) { item in
-                    liveRow(icon: "iphone", tint: .orange, title: item.title,
+                // A recording that's actively uploading is shown once — in the
+                // bar at the bottom — not again here. Only ones that are stuck
+                // (offline, held after a crash) appear in the list.
+                ForEach(up.pendingItems().filter { $0.held || !up.isUploading }) { item in
+                    liveRow(icon: "iphone", tint: P.textSec, title: item.title,
                             sub: item.held ? "Recovered after a crash — approve it in Activity" : "Waiting on this phone to upload")
                     Divider().background(P.border)
                 }
@@ -1425,7 +1424,7 @@ private struct RecentList: View {
             }
             Spacer(minLength: 0)
         }
-        .frame(maxWidth: .infinity, alignment: .leading).padding(.vertical, 11)
+        .frame(maxWidth: .infinity, alignment: .leading).padding(.vertical, 16)
     }
     private func icon(_ s: String) -> String {
         switch s { case "failed": return "exclamationmark.triangle.fill"; case "no_speech": return "speaker.slash.fill"; case "paused": return "pause.circle.fill"; default: return "waveform" }
@@ -1448,11 +1447,13 @@ private struct RecentList: View {
         let creator = creators.creator(for: e)
         let title = e.displayTitle(creator: creator)
         let meta = e.metaLine(creator: creator)
-        return VStack(alignment: .leading, spacing: 3) {
+        // More air per note so the list reads as separate items, not one block.
+        return VStack(alignment: .leading, spacing: 6) {
             Text(title).font(.geist(size: 14, weight: .semibold)).foregroundColor(P.ink).lineLimit(2).multilineTextAlignment(.leading)
-            Text(meta).font(.geist(size: 11)).foregroundColor(P.textDim).lineLimit(2).multilineTextAlignment(.leading)
+                .lineSpacing(2)
+            Text(meta).font(.geist(size: 11.5)).foregroundColor(P.textDim).lineLimit(2).multilineTextAlignment(.leading)
         }
-        .frame(maxWidth: .infinity, alignment: .leading).padding(.vertical, 11)
+        .frame(maxWidth: .infinity, alignment: .leading).padding(.vertical, 16)
     }
 }
 

@@ -289,14 +289,12 @@ struct LibrarySection: View {
         if let n = store.typeCounts["YouTube"], n > 0 { out.append((n.formatted(), "YouTube")) }
         if let n = store.typeCounts["Voice Note"], n > 0 { out.append((n.formatted(), "recordings")) }
         if let n = store.typeCounts["Podcast"], n > 0 { out.append((n.formatted(), "podcasts")) }
-        return Array(out.prefix(4))
+        return Array(out.prefix(3))
     }
 
     private var headerSubtitle: String {
-        var parts: [String] = []
-        if store.libraryCount > 0 { parts.append("\(store.libraryCount.formatted()) entries") }
-        if !creatorGroups.isEmpty { parts.append("\(creatorGroups.count) creators") }
-        return parts.isEmpty ? "Everything you've saved" : parts.joined(separator: " · ")
+        // The entry counts are already in the stats above; just add what isn't.
+        creatorGroups.isEmpty ? "" : "\(creatorGroups.count) creators"
     }
 
     private var showCreators: Bool {
@@ -699,7 +697,11 @@ struct MoreHost: View {
     var body: some View {
         // Each sub-page starts with its own PageHeader, whose "‹ More" capsule comes back here.
         if let sub = chrome.moreSub {
-            subPage(sub)
+            if sub == .notifications {
+                subPage(sub)   // handles its own swipe-back (it has pages of its own)
+            } else {
+                subPage(sub).edgeSwipeBack { chrome.moreSub = nil }
+            }
         } else {
             MoreSection(store: store)
         }

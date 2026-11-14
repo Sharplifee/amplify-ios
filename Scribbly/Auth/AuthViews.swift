@@ -385,7 +385,7 @@ struct OnboardingView: View {
             }
             VStack(alignment: .leading, spacing: 6) {
                 Text("Morning walk notes").font(.geist(size: 17, weight: .semibold)).foregroundColor(P.ink)
-                Text("Transcribed, summarized, searchable — this is how text will look.")
+                Text("This is the size your text will appear throughout Scribbly.")
                     .font(.geist(size: 15)).foregroundColor(P.textSec)
                     .fixedSize(horizontal: false, vertical: true)
             }

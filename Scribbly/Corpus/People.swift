@@ -251,7 +251,8 @@ struct GroupsSection: View {
         guard !ps.isEmpty else { return [] }
         let own = ps.reduce(0) { $0 + $1.own_videos }
         let guest = ps.reduce(0) { $0 + $1.appearances }
-        return [(ps.count.formatted(), "people"), (own.formatted(), "their videos"), (guest.formatted(), "on other shows")]
+        _ = guest
+        return [(ps.count.formatted(), "people"), (own.formatted(), "videos")]
     }
 
     private var subtitle: String {
@@ -270,8 +271,7 @@ struct GroupsSection: View {
         ScrollView {
             VStack(spacing: 0) {   // no gap above the banner
                 ScrollTopAnchor()
-                PageHeader(title: "Groups", subtitle: "Each person's own videos, plus the shows they were on",
-                           stats: groupStats)
+                PageHeader(title: "Groups", stats: groupStats)
                 LazyVStack(spacing: 8) {
                     ListSearch(placeholder: placeholder, text: $q, sorts: Self.sorts, sort: $sort)
                     listBody

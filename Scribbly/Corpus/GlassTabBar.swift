@@ -63,9 +63,10 @@ struct GlassTabBar: View {
         // Monochrome while the recorder/upload strip is showing: dark glass, no colour cast.
         .sinkyGlass(RoundedRectangle(cornerRadius: 31, style: .continuous),
                     tint: m == .tabs ? nil : Color.black.opacity(0.55))
-        .overlay(alignment: .bottom) { transferLine.padding(.horizontal, 30).padding(.bottom, 3) }
         .padding(.top, 6)
-        .padding(.horizontal, 16).padding(.bottom, 8)
+        // Sit low, where a tab bar belongs: reach into the home-indicator
+        // zone instead of floating above it.
+        .padding(.horizontal, 16).padding(.bottom, -12)
         .animation(Self.morph, value: m)
         .sinkyHaptic(selection)
         .sinkyHaptic(m)
@@ -178,21 +179,38 @@ struct GlassTabBar: View {
 
     private var uploadFraction: Double { min(max(up.uploadFraction, 0), 1) }
 
+    /// The ONE place an upload shows: what it is, where it's at, a real bar,
+    /// and Manage (pause/cancel/retry) right there.
     private var uploadStrip: some View {
         let frac = uploadFraction
         let pct = Int((frac * 100).rounded())
-        let label: String = up.stage.isEmpty ? (frac < 1 ? "Uploading…" : "Handed off") : up.stage
-        return HStack(spacing: 10) {
-            Text("Upload").monoLabel(8.5, color: P.accent)
-            Text(label).font(.geist(size: 12, weight: .medium)).foregroundColor(P.ink)
-                .lineLimit(1).minimumScaleFactor(0.8)
-            Spacer(minLength: 6)
-            Text("\(pct)%")
-                .font(.geist(size: 15, weight: .medium, design: .monospaced)).monospacedDigit()
-                .foregroundColor(P.ink)
+        let items = up.pendingItems()
+        let title = items.first?.title ?? "Recording"
+        let stage: String = up.stage.isEmpty ? (frac < 1 ? "Uploading" : "Handing off") : up.stage
+        let more = items.count > 1 ? " · 1 of \(items.count)" : ""
+        return VStack(alignment: .leading, spacing: 7) {
+            HStack(spacing: 10) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(title).font(.geist(size: 13, weight: .semibold)).foregroundColor(P.ink).lineLimit(1)
+                    Text(stage + more).font(.geist(size: 11.5)).foregroundColor(P.textSec).lineLimit(1)
+                }
+                Spacer(minLength: 6)
+                Text("\(pct)%")
+                    .font(.geist(size: 15, weight: .medium, design: .monospaced)).monospacedDigit()
+                    .foregroundColor(P.ink)
+                Button { BottomChrome.shared.showPendingSheet = true } label: {
+                    Text("Manage").font(.geist(size: 12.5, weight: .semibold)).foregroundColor(P.ink)
+                        .padding(.horizontal, 10).frame(height: 28)
+                        .background(Capsule().fill(P.surface2))
+                        .overlay(Capsule().stroke(P.border))
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Manage upload")
+            }
+            GradientProgress(value: frac, height: 4, duration: 0.6)
         }
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Uploading, \(pct) percent")
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Uploading \(title), \(pct) percent")
     }
 
     // MARK: Upload / server progress (thin line + ring)
@@ -206,13 +224,6 @@ struct GlassTabBar: View {
     }
 
     private var transferActive: Bool { up.isUploading || up.serverJob != nil }
-
-    @ViewBuilder private var transferLine: some View {
-        if transferActive, let f = transferFraction {
-            GradientProgress(value: f, height: 2.5, duration: 0.8)
-                .transition(.opacity)
-        }
-    }
 
     /// Server processing while the tabs are back: "62%" (or a spinner) above the disc.
     @ViewBuilder private func serverBadge(_ m: Mode) -> some View {
@@ -275,7 +286,8 @@ struct GlassTabBar: View {
             .contentShape(Circle())
         }
         .buttonStyle(.plain)
-        .overlay(alignment: .center) { serverBadge(m) }
+        // Server progress shows as the ring around the disc; the % and stage
+        // live in the item's own row in Recent Activity — not twice down here.
         .accessibilityLabel(finishing ? "Finish and save recording" : "Record")
         .sinkyHaptic(recordTaps)
         .sinkyHaptic(finishTaps)
@@ -358,14 +370,14 @@ struct MoreSection: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {   // no gap above the banner
-            PageHeader(title: "More", subtitle: "Batches · Query · Activity · Settings")
+            PageHeader(title: "More")
                 .id(ScrollTop.anchor)
             VStack(spacing: 12) {
-                tap(icon: "square.stack.fill", title: "Batches", sub: "Every fetch you've run — one batch per channel, playlist or set of links, with how much of it is saved.", go: .collections)
-                tap(icon: "sparkle.magnifyingglass", title: "Query", sub: "Ask a question across everything in the library.", go: .query)
-                tap(icon: "waveform.path.ecg", title: "Activity", sub: "What's processing now, the last 30 saved, and anything that didn't work — retry or remove.", badge: max(up.pendingCount, status.activeJobs + status.unseenFailures), go: .jobs)
-                tap(icon: "applewatch", title: "Apple Watch", sub: "Record on the wrist; it lands here with the same place title.", go: .watch)
-                tap(icon: "gearshape.fill", title: "Settings", sub: "Permissions, recording, storage, server status.", go: .settings)
+                tap(icon: "square.stack.fill", title: "Batches", sub: "Every channel, playlist and set of links you've fetched.", go: .collections)
+                tap(icon: "sparkle.magnifyingglass", title: "Query", sub: "Ask anything across your whole library.", go: .query)
+                tap(icon: "waveform.path.ecg", title: "Activity", sub: "What's processing, what's saved, and what needs a retry.", badge: max(up.pendingCount, status.activeJobs + status.unseenFailures), go: .jobs)
+                tap(icon: "applewatch", title: "Apple Watch", sub: "Record from your wrist.", go: .watch)
+                tap(icon: "gearshape.fill", title: "Settings", sub: "Account, text size, notifications and recording.", go: .settings)
             }
             .padding(16)
             }

@@ -41,7 +41,7 @@ struct FailedList: View {
                     }
                 }
                 .padding(.horizontal, 18)
-                Text("Videos with no spoken words are saved automatically from their YouTube details, and download failures are retried by the server every 30 minutes — they drop off this list once they're in your Library.")
+                Text("Scribbly retries these on its own. Anything it can't fix stays here until you retry or remove it.")
                     .font(.geist(size: 11.5)).foregroundColor(P.textDim).padding(.horizontal, 18)
                 if let m = model.message {
                     Text(m).font(.geist(size: 12)).foregroundColor(P.good).padding(.horizontal, 18)

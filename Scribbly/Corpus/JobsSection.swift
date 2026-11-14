@@ -12,8 +12,11 @@ struct JobsSection: View {
 
     /// Activity is one page with two halves: what's happening + the last 30
     /// saved, and everything that didn't work.
-    enum Half: String, CaseIterable { case saved = "Now & saved", failed = "Didn't work" }
-    @State private var half: Half = .saved
+    /// "Didn't work" first and shown first — if nothing failed, it steps
+    /// aside to "Now & saved" on its own.
+    enum Half: String, CaseIterable { case failed = "Didn't work", saved = "Now & saved" }
+    @State private var half: Half = .failed
+    @State private var autoPicked = false
     @State private var failedCount: Int?
     @State private var saved: [Entry] = []
     @State private var savedError: String?
@@ -31,7 +34,10 @@ struct JobsSection: View {
             .pickerStyle(.segmented)
             .padding(.horizontal, 16).padding(.top, 14)
             if half == .failed {
-                FailedList(onCount: { failedCount = $0 }).padding(.vertical, 14)
+                FailedList(onCount: { n in
+                    failedCount = n
+                    if n == 0 && !autoPicked { autoPicked = true; half = .saved }
+                }).padding(.vertical, 14)
             } else {
             VStack(spacing: 14) {
 

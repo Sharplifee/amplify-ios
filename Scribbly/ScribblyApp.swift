@@ -173,6 +173,8 @@ final class BottomChrome: ObservableObject {
     @Published var keyboardUp = false
     /// Set by a tapped notification: Library opens this entry.
     @Published var openEntryID: String? = nil
+    /// Opens the "recordings waiting on this phone" sheet (from the upload bar).
+    @Published var showPendingSheet = false
     @Published var armToken = 0
     /// Measured height of each tab's floating bottom chrome (tab bar + recorder /
     /// upload capsule). Scroll pages inset their content by this (ChromeInset).
@@ -239,11 +241,23 @@ struct RecordBar: View {
                     .font(.geist(size: 12)).foregroundColor(P.good)
                     .padding(.horizontal, 20).lineLimit(1)
             }
-            if pending > 0 {
-                Label("\(pending) recording\(pending == 1 ? "" : "s") waiting — tap to manage",
-                      systemImage: "arrow.clockwise.circle")
-                    .font(.geist(size: 12)).foregroundColor(.orange)
-                    .onTapGesture { showPendingSheet = true }
+            // Only when something is stuck waiting (offline, held) — while it's
+            // uploading, the bar below already says so. A real, readable button.
+            if pending > 0 && !up.isUploading {
+                Button { showPendingSheet = true } label: {
+                    HStack(spacing: 8) {
+                        Image(systemName: "icloud.and.arrow.up").font(.system(size: 13, weight: .semibold))
+                        Text("\(pending) recording\(pending == 1 ? "" : "s") waiting to upload")
+                            .font(.geist(size: 13, weight: .medium))
+                        Text("Manage").font(.geist(size: 13, weight: .semibold)).foregroundColor(P.ink)
+                            .padding(.horizontal, 10).frame(height: 24)
+                            .background(Capsule().fill(P.surface2))
+                    }
+                    .foregroundColor(P.textSec)
+                    .padding(.leading, 14).padding(.trailing, 6).frame(height: 36)
+                    .sinkyGlass(Capsule(), interactive: true)
+                }
+                .buttonStyle(.plain)
             }
             if let e = errorText {
                 errorNotice(e)
@@ -260,6 +274,9 @@ struct RecordBar: View {
                 PlaceTagger.shared.tag { Recorder.shared.place = $0 }
                 rec.start()
             }
+        }
+        .onChange(of: chrome.showPendingSheet) { v in
+            if v && here { showPendingSheet = true; chrome.showPendingSheet = false }
         }
         .sheet(isPresented: $showPendingSheet) {
             PendingRecoverySheet(uploader: up).presentationDetents([.medium, .large])

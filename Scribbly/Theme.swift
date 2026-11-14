@@ -329,13 +329,17 @@ struct GradientProgress: View {
     }
 }
 
-/// Section heading: a short copper→teal tick, then the mono label.
+/// Section heading: a copper→teal tick, then the label — big and bright
+/// enough to find at a glance (it was 10 pt grey and easy to miss).
 struct SectionHead: ViewModifier {
     func body(content: Content) -> some View {
-        HStack(spacing: 8) {
-            GradientRule(width: 14)
-            content.monoLabel(10, color: P.textSec)
+        HStack(spacing: 10) {
+            Capsule().fill(P.brand).frame(width: 20, height: 2.5)
+            content.font(.geist(size: 13, weight: .semibold, design: .monospaced))
+                .tracking(1.0).textCase(.uppercase).foregroundColor(P.ink.opacity(0.9))
         }
+        .padding(.top, 4)
+        .accessibilityAddTraits(.isHeader)
     }
 }
 extension View {
@@ -391,6 +395,40 @@ extension UINavigationController: UIGestureRecognizerDelegate {
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         viewControllers.count > 1
     }
+}
+
+/// Swipe in from the left edge to go back — for pages that aren't on a
+/// navigation stack (More's sub-pages, Notifications' tone pages), where the
+/// system's own swipe-back doesn't exist. The page follows your finger and
+/// goes back past ~a third of the way, like every other app.
+struct EdgeSwipeBack: ViewModifier {
+    let action: () -> Void
+    @State private var drag: CGFloat = 0
+    func body(content: Content) -> some View {
+        content
+            .offset(x: drag)
+            .overlay(alignment: .leading) {
+                Color.clear.frame(width: 22).contentShape(Rectangle())
+                    .gesture(DragGesture(minimumDistance: 8, coordinateSpace: .global)
+                        .onChanged { v in drag = max(0, v.translation.width) }
+                        .onEnded { v in
+                            let width = UIScreen.main.bounds.width
+                            if v.translation.width > width * 0.3 || v.predictedEndTranslation.width > width * 0.6 {
+                                withAnimation(.easeOut(duration: 0.18)) { drag = width }
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.18) {
+                                    action()
+                                    drag = 0
+                                }
+                            } else {
+                                withAnimation(.spring(response: 0.3, dampingFraction: 0.85)) { drag = 0 }
+                            }
+                        })
+            }
+    }
+}
+
+extension View {
+    func edgeSwipeBack(_ action: @escaping () -> Void) -> some View { modifier(EdgeSwipeBack(action: action)) }
 }
 
 extension View {

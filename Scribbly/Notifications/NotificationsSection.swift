@@ -14,19 +14,22 @@ struct NotificationsSection: View {
     @State private var testSent = false
 
     var body: some View {
+        // Swipe in from the left edge to go back a page, like every other app.
         if let k = vibrationFor {
             VibrationPicker(kind: k, back: { vibrationFor = nil })
+                .edgeSwipeBack { HapticPlayer.shared.stop(); vibrationFor = nil }
         } else if let k = editing {
             TonePicker(kind: k, back: { editing = nil }, vibration: { vibrationFor = k })
+                .edgeSwipeBack { Notifier.shared.stopPreview(); editing = nil }
         } else {
-            main
+            main.edgeSwipeBack { BottomChrome.shared.moreSub = .settings }
         }
     }
 
     private var main: some View {
         ScrollView {
             VStack(spacing: 0) {
-            PageHeader(title: "Notifications", subtitle: "Alerts, sounds, vibrations & badges",
+            PageHeader(title: "Notifications", subtitle: "Sounds, vibrations and badges",
                        back: { BottomChrome.shared.moreSub = .settings }, backLabel: "Settings")
             VStack(alignment: .leading, spacing: 8) {
                 NFHead("ALLOW NOTIFICATIONS")
@@ -68,7 +71,7 @@ struct NotificationsSection: View {
                     ForEach(NotifyKind.allCases) { k in
                         Button { editing = k } label: {
                             HStack(spacing: 12) {
-                                NFIcon(k.icon, tint: k == .needsAttention ? P.danger : P.accent)
+                                NFIcon(k.icon, tint: k == .needsAttention ? P.danger.opacity(0.85) : nil)
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text(k.title).foregroundColor(s.enabled(k) ? P.ink : P.textDim)
                                     Text(s.enabled(k) ? "\(ToneLibrary.name(s.tone(k))) · \(HapticLibrary.name(s.haptic(k)))" : "Off")
@@ -139,33 +142,37 @@ struct TonePicker: View {
                 NFHead("SCRIBBLY® DEFAULTS")
                 NFCard { ForEach(ToneLibrary.defaults) { t in toneRow(t.id, t.name) } }
 
+                // One continuous list: iOS Default first, every tone, then the
+                // tones you've added (in the order you added them), None last.
                 NFHead("ALERT TONES")
-                NFCard { ForEach(ToneLibrary.alerts) { t in toneRow(t.id, t.name) } }
-
-                NFHead("CUSTOM")
-                NFCard {
-                    ForEach(customs) { c in
-                        toneRow(c.id, c.name)
-                            .contextMenu {
-                                Button(role: .destructive) {
-                                    ToneLibrary.deleteCustom(c.id)
-                                    if s.tone(kind) == c.id { s.setTone(kind, kind.defaultTone) }
-                                    customs = ToneLibrary.customs
-                                } label: { Label("Delete Tone", systemImage: "trash") }
-                            }
-                    }
-                    Button { importing = true } label: {
-                        NFRow(icon: "plus.circle.fill", label: "Add Custom Tone…", value: "From Files", chevron: true)
-                    }.buttonStyle(.plain)
-                }
-                NFFoot("Pick any song, voice memo or sound in Files — the first 29 seconds become the tone (iOS's limit). Press and hold a custom tone to delete it.")
-                if let e = importError { Text(e).font(.geist(size: 13)).foregroundColor(P.danger) }
-
-                NFHead("OTHER")
                 NFCard {
                     toneRow(ToneLibrary.systemID, "iOS Default")
+                    ForEach(ToneLibrary.alerts) { t in toneRow(t.id, t.name) }
+                    ForEach(customs) { c in
+                        VStack(spacing: 0) {
+                            toneRow(c.id, c.name, custom: true)
+                            if s.tone(kind) == c.id {
+                                ToneTrimmer(tone: c, haptic: s.haptic(kind)) { customs = ToneLibrary.customs }
+                                    .padding(.vertical, 10)
+                                    .overlay(NFDivider(), alignment: .bottom)
+                                    .transition(.opacity.combined(with: .move(edge: .top)))
+                            }
+                        }
+                        .contextMenu {
+                            Button(role: .destructive) {
+                                ToneLibrary.deleteCustom(c.id)
+                                if s.tone(kind) == c.id { s.setTone(kind, kind.defaultTone) }
+                                customs = ToneLibrary.customs
+                            } label: { Label("Delete Tone", systemImage: "trash") }
+                        }
+                    }
+                    Button { importing = true } label: {
+                        NFRow(icon: "plus", label: "Add a Tone…", value: "", chevron: true)
+                    }.buttonStyle(.plain)
                     toneRow(ToneLibrary.noneID, "None")
                 }
+                NFFoot("Add any song, voice memo or sound. It's saved in the Scribbly folder in Files, and you can trim it to the exact part you want (up to 29 seconds). Press and hold an added tone to delete it.")
+                if let e = importError { Text(e).font(.geist(size: 13)).foregroundColor(P.danger) }
             }
             .padding(16)
             }
@@ -200,10 +207,10 @@ struct TonePicker: View {
         pendingURL = nil
     }
 
-    private func toneRow(_ id: String, _ name: String) -> some View {
+    private func toneRow(_ id: String, _ name: String, custom: Bool = false) -> some View {
         let on = s.tone(kind) == id
         return Button {
-            s.setTone(kind, id)
+            withAnimation(.easeInOut(duration: 0.25)) { s.setTone(kind, id) }
             Notifier.shared.previewTone(id, haptic: s.haptic(kind))
         } label: {
             HStack {
@@ -212,6 +219,7 @@ struct TonePicker: View {
                 Text(name).foregroundColor(P.ink)
                 Spacer()
                 if id == kind.defaultTone { Text("DEFAULT").monoLabel(9.5, color: P.textDim) }
+                if custom { Image(systemName: on ? "scissors" : "waveform").font(.system(size: 12)).foregroundColor(P.textDim) }
             }
             .padding(.vertical, 11).contentShape(Rectangle())
             .overlay(NFDivider(), alignment: .bottom)
@@ -428,12 +436,17 @@ struct NFCard<C: View>: View {
 struct NFDivider: View {
     var body: some View { Rectangle().fill(P.border).frame(height: 1) }
 }
+/// Settings-style icon tile: a quiet graphite tile with a light glyph (not a
+/// wall of orange). Only "Needs Attention" keeps a colour — a muted red.
 struct NFIcon: View {
-    let name: String; let tint: Color
-    init(_ name: String, tint: Color = P.accent) { self.name = name; self.tint = tint }
+    let name: String; let tint: Color?
+    init(_ name: String, tint: Color? = nil) { self.name = name; self.tint = tint }
     var body: some View {
-        Image(systemName: name).font(.system(size: 13, weight: .semibold)).foregroundColor(.black)
-            .frame(width: 28, height: 28).background(RoundedRectangle(cornerRadius: 7, style: .continuous).fill(tint))
+        Image(systemName: name).font(.system(size: 13, weight: .semibold))
+            .foregroundColor(tint ?? P.ink.opacity(0.9))
+            .frame(width: 28, height: 28)
+            .background(RoundedRectangle(cornerRadius: 7, style: .continuous).fill(P.surface2))
+            .overlay(RoundedRectangle(cornerRadius: 7, style: .continuous).stroke(P.border, lineWidth: 1))
     }
 }
 struct NFRow: View {
@@ -464,5 +477,107 @@ struct NFToggle: View {
         }
         .padding(.vertical, 8)
         .overlay(NFDivider(), alignment: .bottom)
+    }
+}
+
+// MARK: - Trim an added tone in place
+
+/// Opens under a selected added tone: the whole file's waveform with two
+/// handles — drag them to the exact start and end (up to 29 s), hear it, save.
+struct ToneTrimmer: View {
+    let tone: CustomTone
+    let haptic: String
+    let saved: () -> Void
+    @State private var bars: [Float] = []
+    @State private var start: Double = 0
+    @State private var end: Double = 0
+    @State private var busy = false
+    @State private var error: String?
+
+    private var total: Double { max(tone.duration ?? ToneLibrary.maxSeconds, 0.5) }
+    private var length: Double { end - start }
+    private var changed: Bool { abs(start - (tone.start ?? 0)) > 0.05 || abs(end - (tone.end ?? total)) > 0.05 }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            GeometryReader { g in
+                let w = g.size.width
+                ZStack(alignment: .leading) {
+                    HStack(alignment: .center, spacing: 1.5) {
+                        ForEach(Array(bars.enumerated()), id: \.offset) { i, v in
+                            let t = total * Double(i) / Double(max(bars.count, 1))
+                            Capsule().fill(t >= start && t <= end ? P.ink : P.textDim.opacity(0.35))
+                                .frame(height: max(3, CGFloat(v) * 44))
+                        }
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    // Selected window
+                    RoundedRectangle(cornerRadius: 6).stroke(P.accent, lineWidth: 2)
+                        .frame(width: max(4, w * (end - start) / total), height: 52)
+                        .offset(x: w * start / total)
+                        .allowsHitTesting(false)
+                    handle.offset(x: w * start / total - 9)
+                        .gesture(DragGesture(coordinateSpace: .named("trim")).onChanged { v in
+                            let t = min(max(0, Double(v.location.x / w) * total), end - 0.5)
+                            start = max(t, end - ToneLibrary.maxSeconds)
+                        })
+                    handle.offset(x: w * end / total - 9)
+                        .gesture(DragGesture(coordinateSpace: .named("trim")).onChanged { v in
+                            let t = max(min(total, Double(v.location.x / w) * total), start + 0.5)
+                            end = min(t, start + ToneLibrary.maxSeconds)
+                        })
+                }
+                .coordinateSpace(name: "trim")
+            }
+            .frame(height: 56)
+
+            HStack {
+                Text("\(fmt(start)) – \(fmt(end))").font(.geist(size: 13, design: .monospaced)).foregroundColor(P.textSec)
+                Text("· \(String(format: "%.1f", length)) s").font(.geist(size: 13, design: .monospaced)).foregroundColor(P.textDim)
+                Spacer()
+                Button { save(preview: true) } label: {
+                    Label(changed ? "Save & Play" : "Play", systemImage: "play.fill")
+                        .font(.geist(size: 13, weight: .semibold)).foregroundColor(.black)
+                        .padding(.horizontal, 12).frame(height: 30)
+                        .background(Capsule().fill(P.ink))
+                }
+                .buttonStyle(.plain).disabled(busy)
+            }
+            if let error { Text(error).font(.geist(size: 12)).foregroundColor(P.danger) }
+        }
+        .padding(.leading, 22)
+        .task(id: tone.id) {
+            start = tone.start ?? 0
+            end = tone.end ?? min(total, ToneLibrary.maxSeconds)
+            let id = tone.id
+            bars = await Task.detached { ToneLibrary.waveform(id) }.value
+        }
+    }
+
+    private var handle: some View {
+        RoundedRectangle(cornerRadius: 4).fill(P.accent).frame(width: 18, height: 56)
+            .overlay(Capsule().fill(Color.black.opacity(0.5)).frame(width: 2, height: 18))
+            .contentShape(Rectangle().inset(by: -10))
+            .accessibilityLabel("Trim handle")
+    }
+
+    private func fmt(_ t: Double) -> String { String(format: "%d:%04.1f", Int(t) / 60, t.truncatingRemainder(dividingBy: 60)) }
+
+    private func save(preview: Bool) {
+        guard changed else { Notifier.shared.previewTone(tone.id, haptic: haptic); return }
+        busy = true
+        let (id, s0, e0) = (tone.id, start, end)
+        Task.detached {
+            do {
+                try ToneLibrary.retrim(id, start: s0, end: e0)
+                await MainActor.run {
+                    busy = false; error = nil; saved()
+                    EventLog.shared.log("notify.tone_trimmed", ["start": s0, "end": e0])
+                    if preview { Notifier.shared.previewTone(id, haptic: haptic) }
+                }
+            } catch {
+                await MainActor.run { busy = false; self.error = "Couldn't trim: \(error.localizedDescription)" }
+            }
+        }
     }
 }

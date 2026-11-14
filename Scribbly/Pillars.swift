@@ -222,9 +222,11 @@ struct PageHeader: View {
     }
 
     private var wordmark: some View {
-        HStack(alignment: .top, spacing: 1) {
+        HStack(alignment: .top, spacing: 0) {
             Text("Scribbly").font(.geist(size: 30, weight: .semibold)).tracking(-1.3).foregroundColor(P.ink)
-            Text("®").font(.geist(size: 11)).foregroundColor(P.textSec)
+            // ® a touch larger and crisper, tucked down-left against the "y".
+            Text("®").font(.geist(size: 13, weight: .medium)).foregroundColor(P.ink.opacity(0.85))
+                .offset(x: -1, y: 2)
         }
         .accessibilityLabel("Scribbly")
         // Sit on the text baseline, so the gap to the banner matches the back button's.
@@ -248,7 +250,9 @@ struct PageHeader: View {
 
     @ViewBuilder private var trailingText: some View {
         if let trailing, !trailing.isEmpty {
-            Text(trailing).monoLabel(11).alignmentGuide(.bottom) { d in d[.lastTextBaseline] }
+            // Inset from the card's rounded corner by the same stripe the wordmark uses.
+            Text(trailing).monoLabel(11).padding(.leading, Self.stripe)
+                .alignmentGuide(.bottom) { d in d[.lastTextBaseline] }
         }
     }
 

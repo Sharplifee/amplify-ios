@@ -63,7 +63,10 @@ struct SettingsSection: View {
                         HStack(alignment: .bottom, spacing: 8) {
                             ForEach(TextSizeOption.allCases) { o in
                                 let on = textSize == o.rawValue
-                                Button { withAnimation(.spring(response: 0.3, dampingFraction: 0.85)) { textSize = o.rawValue } } label: {
+                                Button {
+                                    withAnimation(.spring(response: 0.3, dampingFraction: 0.85)) { textSize = o.rawValue }
+                                    Task { await auth.setTextSize(o.rawValue) }
+                                } label: {
                                     VStack(spacing: 6) {
                                         Text("A").font(.custom("Geist-SemiBold", fixedSize: o.sample))
                                             .foregroundColor(on ? .black : P.ink)
@@ -79,8 +82,9 @@ struct SettingsSection: View {
                                 .accessibilityAddTraits(on ? .isSelected : [])
                             }
                         }
-                        Text("Transcribed, summarized, searchable — this is how text will look.")
+                        Text("This is the size your text will appear throughout Scribbly. It stays until you change it.")
                             .font(.geist(size: 14)).foregroundColor(P.textSec)
+                            .fixedSize(horizontal: false, vertical: true)
                     }
                     .padding(.vertical, 14)
                 }
@@ -187,11 +191,11 @@ struct WatchInfoSection: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {   // no gap above the banner
-            PageHeader(title: "Apple Watch", subtitle: "Record on the wrist",
+            PageHeader(title: "Apple Watch", subtitle: "Record from your wrist",
                        back: { BottomChrome.shared.moreSub = nil })
             VStack(alignment: .leading, spacing: 8) {
                 Text("HOW IT WORKS").sectionHead()
-                Text("Tap Record on the watch; it records on the wrist without the phone. Finish sends the file to this iPhone — queued until it's nearby — and it lands in the library with the same place title as a phone memo.")
+                Text("Tap Record on your watch — no phone needed. When you finish, the recording comes to this iPhone once it's nearby and lands in your library.")
                     .font(.geist(size: 14.5)).foregroundColor(P.textSec).lineSpacing(3)
                     .padding(14).frame(maxWidth: .infinity, alignment: .leading)
                     .background(P.surface).clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))

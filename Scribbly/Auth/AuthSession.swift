@@ -192,6 +192,16 @@ final class AuthSession: ObservableObject {
         if await saveProfile(p) { profile = p; phase = .ready }
     }
 
+    /// Settings › Text size: saved to the profile too, so signing in again
+    /// (or a fresh launch) never puts the onboarding choice back.
+    func setTextSize(_ size: String) async {
+        UserDefaults.standard.set(size, forKey: TextSizeOption.storageKey)
+        guard var p = profile, p.text_size != size else { return }
+        p.text_size = size
+        if await saveProfile(p) { profile = p }
+        EventLog.shared.log("settings.text_size", ["size": size])
+    }
+
     func rename(_ name: String) async {
         guard var p = profile else { return }
         p.display_name = name.trimmingCharacters(in: .whitespacesAndNewlines)
