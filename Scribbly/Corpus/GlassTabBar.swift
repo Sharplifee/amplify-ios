@@ -311,18 +311,16 @@ struct GlassTabBar: View {
     // MARK: Tabs
 
     /// Live badges: Library = new since you last looked; More = processing now
-    /// (red when something didn't work).
+    /// — shown as a small copper dot, never a number.
     @ViewBuilder private func tabBadge(for s: LibraryScreen.Section) -> some View {
         if notify.tabBadges {
             let n: Int = s == .library ? status.unseenLibrary : (s == .more ? status.activeJobs + status.unseenFailures : 0)
             if n > 0 {
-                let red = s == .library || (s == .more && status.unseenFailures > 0)
-                Text(n > 99 ? "99+" : "\(n)")
-                    .font(.system(size: 11, weight: .bold, design: .rounded)).monospacedDigit()
-                    .foregroundColor(red ? .white : .black)
-                    .padding(.horizontal, 5).frame(minWidth: 18, minHeight: 18)
-                    .background(Capsule().fill(red ? Color(red: 1, green: 0.23, blue: 0.19) : P.accent))
-                    .overlay(Capsule().stroke(Color.black, lineWidth: 1.5))
+                // A small copper dot — "something new here" — not a red number.
+                Circle().fill(P.accent)
+                    .frame(width: 8, height: 8)
+                    .overlay(Circle().stroke(Color.black, lineWidth: 1.5))
+                    .offset(x: -4, y: 4)
                     .transition(.scale.combined(with: .opacity))
                     .accessibilityLabel(s == .library ? "\(n) new" : "\(n) in progress")
             }
@@ -401,9 +399,8 @@ struct MoreSection: View {
                     HStack(spacing: 6) {
                         Text(title).font(.geist(size: 16, weight: .semibold)).tracking(-0.3).foregroundColor(P.ink)
                         if badge > 0 {
-                            Text("\(badge)").monoLabel(10, color: Color(hex: 0xF2A57F))
-                                .padding(.horizontal, 8).frame(height: 20)
-                                .background(P.accent.opacity(0.16)).clipShape(Capsule())
+                            Circle().fill(P.accent).frame(width: 7, height: 7)
+                                .accessibilityLabel("Has updates")
                         }
                     }
                     Text(sub).font(.geist(size: 12.5)).foregroundColor(P.textSec).multilineTextAlignment(.leading)

@@ -62,9 +62,9 @@ struct NotificationsSection: View {
                 NFHead("BADGES")
                 NFCard {
                     NFToggle(icon: "app.badge.fill", label: "App Icon Badge", isOn: $s.appBadge)
-                    NFToggle(icon: "circle.badge.fill", label: "Tab Bar Badges", isOn: $s.tabBadges)
+                    NFToggle(icon: "circle.badge.fill", label: "Tab Bar Dots", isOn: $s.tabBadges)
                 }
-                NFFoot("App icon: new library entries + anything that didn't work (now \(watcher.unseenLibrary + watcher.unseenFailures)). Tabs: Library shows what's new, More shows what's processing (\(watcher.activeJobs) now).")
+                NFFoot("The app icon counts new entries and anything that didn't work. Inside the app, a small dot on Library means something new, and on More means something's processing.")
 
                 NFHead("SOUNDS & HAPTICS")
                 NFCard {
