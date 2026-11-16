@@ -538,13 +538,18 @@ final class Uploader: NSObject, ObservableObject {
             let serverStage = (j["stage"] as? String).flatMap { $0.isEmpty ? nil : $0 }
             let finished = ["done", "failed", "no_speech", "cancelled"].contains(state)
             if state == "done" { pct = 100 }
-            let stage = serverStage ?? Self.stageText(state)
+            // Parked on a transcription limit: say so plainly and hold the bar
+            // still — creeping toward 84% made a waiting job look stuck.
+            let waitNote = (j["error"] as? String).flatMap { $0.localizedCaseInsensitiveContains("rate limited") ? $0 : nil }
+            let waiting = state == "pending" && (waitNote != nil || j["nextAttemptAt"] != nil)
+            let stage = waiting ? (waitNote.map { $0.replacingOccurrences(of: "Rate limited — r", with: "Waiting on transcription limit — r") } ?? "Waiting on transcription limit")
+                                : (serverStage ?? Self.stageText(state))
             let title = (j["title"] as? String) ?? ""
             // The server reports milestones (5, 10, 25–80 per chunk, 85, 100).
             // Between them, creep forward 2%/s so the bar moves the whole time,
             // never past the next milestone, never backwards.
             let real = pct ?? 0
-            if finished { shown = real } else {
+            if finished || waiting { shown = max(shown, real) } else {
                 let ceiling: Double = real < 25 ? 24 : (real < 85 ? 84 : 99)
                 shown = max(real, min(shown + 2, ceiling))
             }
