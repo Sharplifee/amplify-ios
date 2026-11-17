@@ -102,6 +102,9 @@ struct RootView: View {
             LibraryScreen(initial: .home)
                 .frame(maxWidth: 900)
                 .frame(maxWidth: .infinity)
+            // A spoken note to Claude keeps recording on every page.
+            VStack { TellClaudePill(); Spacer() }
+                .animation(.spring(response: 0.35, dampingFraction: 0.85), value: TellClaude.shared.recording)
         }
         // The Upload picker lives at the root, outside the TabView: presented from
         // inside a tab page it never appeared (Upload "does nothing", build 220).

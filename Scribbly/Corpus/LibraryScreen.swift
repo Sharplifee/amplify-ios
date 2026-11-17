@@ -14,7 +14,7 @@ struct LibraryScreen: View {
     enum Section: String, CaseIterable, Identifiable {
         case home = "Home", library = "Library", record = "Record",
              groups = "Groups", more = "More", collections = "Collections", query = "Query", jobs = "Activity",
-             settings = "Settings", watch = "Apple Watch", notifications = "Notifications"
+             settings = "Settings", watch = "Apple Watch", notifications = "Notifications", tellClaude = "Tell Claude"
         var id: String { rawValue }
         /// The four real pages. Collections · Query · Activity live inside More.
         static let pages: [Section] = [.home, .library, .groups, .more]
@@ -31,6 +31,7 @@ struct LibraryScreen: View {
             case .settings:    return "gearshape.fill"
             case .watch:       return "applewatch"
             case .notifications: return "bell.badge.fill"
+            case .tellClaude:  return "bubble.left.and.text.bubble.right.fill"
             }
         }
     }
@@ -57,7 +58,7 @@ struct LibraryScreen: View {
             if newTab != .home { chrome.savedTitle = nil }
             switch newTab {
             case .record: chrome.currentTab = lastRealTab; startRecording()
-            case .collections, .query, .jobs, .settings, .watch, .notifications: chrome.moreSub = newTab; chrome.currentTab = .more
+            case .collections, .query, .jobs, .settings, .watch, .notifications, .tellClaude: chrome.moreSub = newTab; chrome.currentTab = .more
             default: lastRealTab = newTab
             }
             if newTab == .library { StatusWatcher.shared.markLibrarySeen() }
@@ -218,6 +219,7 @@ struct LibraryScreen: View {
         case .settings:    SettingsSection()
         case .watch:       WatchInfoSection()
         case .notifications: NotificationsSection()
+        case .tellClaude:  TellClaudeSection()
         }
     }
 }
@@ -714,6 +716,7 @@ struct MoreHost: View {
         case .settings:    SettingsSection()
         case .watch:       WatchInfoSection()
         case .notifications: NotificationsSection()
+        case .tellClaude:  TellClaudeSection()
         default:           JobsSection()
         }
     }
