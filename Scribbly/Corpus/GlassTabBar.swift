@@ -1,4 +1,5 @@
 import SwiftUI
+import SafariServices
 
 /// The bottom bar: four glass tabs with the Record button as the largest
 /// element, a 76pt disc standing proud of the bar (per Connor's reference).
@@ -369,11 +370,11 @@ struct GlassTabBar: View {
 /// The slim "Ready to share" row on top of the glass tab bar: the outlets Prism
 /// has prepped (Reels, Stories, Shorts, LinkedIn, Text) with one tap into Prism.
 struct ShareReadyStrip: View {
-    @Environment(\.openURL) private var openURL
+    @State private var showPrism = false
     private let outlets = ["IG", "TT", "YT", "in"]
     var body: some View {
         Button {
-            if let u = URL(string: "https://getamplify.vercel.app/prism") { openURL(u) }
+            showPrism = true
         } label: {
             HStack(spacing: 10) {
                 HStack(spacing: -6) {
@@ -400,7 +401,25 @@ struct ShareReadyStrip: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel("Ready to share to Instagram, TikTok, YouTube Shorts, LinkedIn and Text. Opens Prism.")
+        .fullScreenCover(isPresented: $showPrism) {
+            PrismBrowser(url: URL(string: "https://getamplify.vercel.app/prism")!).ignoresSafeArea()
+        }
     }
+}
+
+/// Prism opens inside the app. Safari's in-app view keeps the iOS share sheet,
+/// file uploads, the microphone and video playback working exactly as in Safari.
+struct PrismBrowser: UIViewControllerRepresentable {
+    let url: URL
+    func makeUIViewController(context: Context) -> SFSafariViewController {
+        let c = SFSafariViewController.Configuration()
+        c.barCollapsingEnabled = true
+        let vc = SFSafariViewController(url: url, configuration: c)
+        vc.preferredControlTintColor = UIColor(red: 0.169, green: 0.420, blue: 1.0, alpha: 1)
+        vc.dismissButtonStyle = .done
+        return vc
+    }
+    func updateUIViewController(_ vc: SFSafariViewController, context: Context) {}
 }
 
 /// "More" page: Collections · Query · Activity · Apple Watch · Settings, as cards.
