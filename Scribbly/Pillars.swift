@@ -224,9 +224,6 @@ struct PageHeader: View {
     private var wordmark: some View {
         HStack(alignment: .top, spacing: 0) {
             Text("Legacy Prism").font(.geist(size: 30, weight: .semibold)).tracking(-1.3).foregroundColor(P.ink)
-            // ® a touch larger and crisper, tucked down-left against the "y".
-            Text("®").font(.geist(size: 13, weight: .medium)).foregroundColor(P.ink.opacity(0.85))
-                .offset(x: -1, y: 2)
         }
         .accessibilityLabel("Legacy Prism")
         // Sit on the text baseline, so the gap to the banner matches the back button's.
