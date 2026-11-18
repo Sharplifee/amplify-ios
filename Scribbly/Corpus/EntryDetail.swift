@@ -17,6 +17,9 @@ struct EntryDetail: View {
     @ObservedObject private var creators = CreatorDirectory.shared
     /// The original link when the entry row has none (master_corpus.source_url).
     @State private var mirrorSource: URL?
+    /// The kept recording, when there is one.
+    @State private var audio: EntryAudio?
+    @State private var tab = 0   // 0 Summary · 1 Transcript
 
     private func originalLink(_ e: Entry) -> URL? { e.sourceLink ?? mirrorSource }
     private func originalLabel(_ u: URL) -> String {
@@ -92,9 +95,23 @@ struct EntryDetail: View {
                         }
                     }
 
+                    if let a = audio {
+                        EntryAudioCard(audio: a, title: e.kindLabel + (e.place.map { " · " + $0 } ?? ""))
+                    }
+                    if hasTranscript(e) {
+                        Picker("", selection: $tab) {
+                            Text("Summary").tag(0)
+                            Text("Transcript").tag(1)
+                        }
+                        .pickerStyle(.segmented)
+                        .padding(.top, 2)
+                    }
+                    if tab == 1 && hasTranscript(e) {
+                        ParagraphTranscript(entry: e, audio: audio).padding(.top, 6)
+                    } else {
                     if let s = e.summary, !s.isEmpty {
                         sectionLabel("Summary")
-                        Text(s).font(.geist(size: 15)).foregroundColor(P.textSec)
+                        StructuredSummary(text: s)
                     }
                     sectionLabel("Send to")
                     sendToClaudeButton(e)
@@ -162,10 +179,6 @@ struct EntryDetail: View {
                     }
 
                     AskBox(entry: e)
-
-                    if let t = e.cleanTranscript, !t.isEmpty {
-                        sectionLabel("Transcript")
-                        Text(t).font(.geist(size: 14)).foregroundColor(P.textSec.opacity(0.85))
                     }
                 }
                 .padding(.horizontal, 18).padding(.bottom, 18).padding(.top, 4)
@@ -195,12 +208,18 @@ struct EntryDetail: View {
         // The tab bar stays visible here (pages inset for it), so tapping the
         // current tab can always pop back to its root.
         .onAppear { BottomChrome.shared.savedTitle = nil }
+        .onDisappear { audio?.stop() }
         .task {
             entry = preloaded
             await CreatorDirectory.shared.loadIfNeeded()
             // Always refetch to get the transcript, which list rows omit.
             if let full = try? await CorpusAPI.entry(id: entryID) { entry = full }
             loading = false
+            if let e = entry, e.audio_path != nil, audio == nil {
+                let a = EntryAudio(entryID: e.id, knownDuration: e.duration_seconds)
+                audio = a
+                await a.prepare()
+            }
             if let e = entry, e.sourceLink == nil { mirrorSource = await Self.mirrorSourceURL(e.id) }
         }
     }
@@ -361,6 +380,8 @@ struct EntryDetail: View {
     }
 
     /// Clear, unmistakable section breaks: Summary · Send to · Transcript.
+    private func hasTranscript(_ e: Entry) -> Bool { !(e.cleanTranscript ?? "").isEmpty }
+
     private func sectionLabel(_ t: String) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(t).font(.geist(size: 21, weight: .bold)).tracking(-0.5).foregroundColor(P.ink)

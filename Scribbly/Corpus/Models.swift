@@ -19,6 +19,10 @@ struct Entry: Codable, Identifiable, Hashable {
     var place: String? = nil
     /// What it is: "Recording", "Screen recording", "Video", "MP4", "M4A"…
     var kind: String? = nil
+    /// Where the kept recording lives (Storage bucket "recordings"); nil = no audio.
+    var audio_path: String? = nil
+    /// The transcript in readable paragraphs, each with its start time in the audio.
+    var paragraphs: [TranscriptPara]? = nil
 
     var tagList: [String] {
         (tags ?? "").split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty }
@@ -306,6 +310,12 @@ enum Ranker {
         }
         return total
     }
+}
+
+/// One paragraph of a transcript and where it starts in the recording (seconds).
+struct TranscriptPara: Codable, Hashable {
+    let t: Double
+    let text: String
 }
 
 // MARK: - Transcript clean-up
