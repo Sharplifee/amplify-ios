@@ -53,6 +53,13 @@ struct GlassTabBar: View {
                     .padding(.horizontal, 14).padding(.top, 10).padding(.bottom, 2)
                     .transition(.opacity.combined(with: .move(edge: .bottom)))
             }
+            if m == .tabs {
+                // Mild, always-on reminder that the sharing outlets are prepped and standing by.
+                ShareReadyStrip()
+                    .padding(.horizontal, 14).padding(.top, 9).padding(.bottom, 7)
+                    .transition(.opacity)
+                Rectangle().fill(P.divider).frame(height: 1).padding(.horizontal, 16)
+            }
             tabsRow(withDisc: m == .tabs)
                 .padding(.horizontal, 6).padding(.vertical, 6)
                 .overlay(alignment: .center) {
@@ -347,7 +354,7 @@ struct GlassTabBar: View {
             .frame(maxWidth: .infinity).padding(.vertical, 8)
             .background {
                 if on {
-                    Capsule().fill(Color.white.opacity(0.07))
+                    Capsule().fill(P.accent.opacity(0.10))
                         .overlay(alignment: .bottom) { GradientRule(width: 18).padding(.bottom, 3) }
                         .matchedGeometryEffect(id: "sel", in: glassNS)
                 }
@@ -356,6 +363,43 @@ struct GlassTabBar: View {
         }
         .buttonStyle(.plain)
         .accessibilityAddTraits(on ? .isSelected : [])
+    }
+}
+
+/// The slim "Ready to share" row on top of the glass tab bar: the outlets Prism
+/// has prepped (Reels, Stories, Shorts, LinkedIn, Text) with one tap into Prism.
+struct ShareReadyStrip: View {
+    @Environment(\.openURL) private var openURL
+    private let outlets = ["IG", "TT", "YT", "in"]
+    var body: some View {
+        Button {
+            if let u = URL(string: "https://getamplify.vercel.app/prism") { openURL(u) }
+        } label: {
+            HStack(spacing: 10) {
+                HStack(spacing: -6) {
+                    ForEach(Array(outlets.enumerated()), id: \.offset) { i, o in
+                        Text(o).font(.geist(size: 8.5, weight: .bold)).foregroundColor(P.onBanner)
+                            .frame(width: 22, height: 22)
+                            .background(Circle().fill(PillarPalette.base(i + 1, of: outlets.count + 2).color))
+                            .overlay(Circle().stroke(Color.white, lineWidth: 1.5))
+                    }
+                }
+                VStack(alignment: .leading, spacing: 1) {
+                    Text("Ready to share").font(.geist(size: 12.5, weight: .semibold)).foregroundColor(P.ink)
+                    Text("Reels · Stories · Shorts · Posts").font(.geist(size: 10.5, weight: .regular))
+                        .foregroundColor(P.textDim).lineLimit(1)
+                }
+                Spacer(minLength: 6)
+                HStack(spacing: 4) {
+                    Circle().fill(P.good).frame(width: 6, height: 6)
+                    Text("Prism").font(.geist(size: 11.5, weight: .semibold)).foregroundColor(P.accent)
+                    Image(systemName: "chevron.right").font(.system(size: 10, weight: .semibold)).foregroundColor(P.accent)
+                }
+            }
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("Ready to share to Instagram, TikTok, YouTube Shorts, LinkedIn and Text. Opens Prism.")
     }
 }
 

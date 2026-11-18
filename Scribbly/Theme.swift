@@ -69,13 +69,13 @@ extension View {
     @ViewBuilder
     func sinkyNavBar() -> some View {
         if #available(iOS 26.0, *) {
-            self.toolbarColorScheme(.dark, for: .navigationBar)
+            self.toolbarColorScheme(.light, for: .navigationBar)
                 .scrollEdgeEffectStyle(.soft, for: .top)
         } else {
             // Automatic visibility: clear while the page's pillar banner is under
             // it, solid black once content scrolls beneath it.
             self.toolbarBackground(P.bg, for: .navigationBar)
-                .toolbarColorScheme(.dark, for: .navigationBar)
+                .toolbarColorScheme(.light, for: .navigationBar)
         }
     }
 
