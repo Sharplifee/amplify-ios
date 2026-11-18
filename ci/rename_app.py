@@ -10,7 +10,7 @@ def call(m, path, body=None):
         data=json.dumps(body).encode() if body else None, headers={"Authorization": "Bearer " + tok, "Content-Type": "application/json"})
     try: return json.loads(urllib.request.urlopen(r).read() or b"{}")
     except urllib.error.HTTPError as e: print(m, path, e.code, e.read()[:500]); raise
-app = call("GET", "/apps?filter[bundleId]=com.connor.scribbly")["data"][0]
+app = call("GET", "/apps?filter[bundleId]=com.connor.amplify")["data"][0]
 print("APP", app["attributes"]["name"])
 for info in call("GET", f"/apps/{app['id']}/appInfos")["data"]:
     for loc in call("GET", f"/appInfos/{info['id']}/appInfoLocalizations")["data"]:

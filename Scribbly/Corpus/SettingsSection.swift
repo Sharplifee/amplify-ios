@@ -130,8 +130,8 @@ struct SettingsSection: View {
                 header("ABOUT")
                 card {
                     plainRow("Version", version)
-                    Link(destination: URL(string: "https://getscribbly.vercel.app/privacy")!) { navRow("Privacy policy") }
-                    Link(destination: URL(string: "https://getscribbly.vercel.app/support")!) { navRow("Support") }
+                    Link(destination: URL(string: "https://getamplify.vercel.app/privacy")!) { navRow("Privacy policy") }
+                    Link(destination: URL(string: "https://getamplify.vercel.app/support")!) { navRow("Support") }
                 }
             }
             .padding(16)

@@ -22,7 +22,7 @@ struct ScribblyWatchApp: App {
     var body: some Scene {
         WindowGroup {
             WatchRecordView()
-                // Complications: scribbly-watch://record | stop | toggle | open
+                // Complications: amplify-watch://record | stop | toggle | open
                 .onOpenURL { url in
                     let r = WatchRecorder.shared
                     switch url.host {

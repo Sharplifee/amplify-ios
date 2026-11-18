@@ -24,7 +24,7 @@ struct RecordTap<Content: View>: View {
         if #available(iOS 18.0, *) {
             Button(intent: ToggleScribblyRecordingIntent()) { content() }.buttonStyle(.plain)
         } else {
-            content().widgetURL(URL(string: "scribbly://record"))
+            content().widgetURL(URL(string: "amplify://record"))
         }
     }
 }
@@ -128,7 +128,7 @@ struct ActionStack: View {
 
 struct RecordWidget: Widget {
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: "com.connor.scribbly.widget", provider: RecordProvider()) { _ in
+        StaticConfiguration(kind: "com.connor.amplify.widget", provider: RecordProvider()) { _ in
             if #available(iOS 17.0, *) {
                 RecordWidgetView().containerBackground(for: .widget) { SinkyFins() }
             } else {

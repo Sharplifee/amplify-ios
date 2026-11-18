@@ -26,7 +26,7 @@ struct RecordingLiveActivityWidget: Widget {
             RecordingActivityContent(state: ctx.state)
                 .activityBackgroundTint(Color.black.opacity(0.92))
                 .activitySystemActionForegroundColor(Sinky.ink)
-                .widgetURL(URL(string: "scribbly://open"))
+                .widgetURL(URL(string: "amplify://open"))
         } dynamicIsland: { ctx in
             // Collapsed (compact): elapsed time far left, live wave right.
             // iOS opens the app on any tap in the collapsed island — buttons
@@ -69,7 +69,7 @@ struct RecordingLiveActivityWidget: Widget {
                     .frame(width: 14)
             }
             .keylineTint(Color.white.opacity(0.45))   // clearly there, not glowing
-            .widgetURL(URL(string: "scribbly://open"))
+            .widgetURL(URL(string: "amplify://open"))
         }
     }
 

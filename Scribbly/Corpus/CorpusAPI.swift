@@ -13,17 +13,17 @@ import Foundation
 ///     every scribbly_entries insert/update/delete into it.
 enum CorpusAPI {
 
-    static let supabaseURL = "https://lbvaosyfikkpvcwksiph.supabase.co"
+    static let supabaseURL = "https://anqzattboqkdwvfwgirc.supabase.co"
     static let restBase = "\(supabaseURL)/rest/v1"
-    static let appBase  = "https://getscribbly.vercel.app"
+    static let appBase  = "https://getamplify.vercel.app"
     /// Phone-off voice pipeline: the box at sharp-cloud-01 accepts one raw-audio
     /// POST, transcribes with Groq Whisper (auto-chunking any length), summarizes
     /// and saves — the connection has no size or time limit. The phone's only job
     /// is to finish the upload; everything after that survives the app closing.
-    static let voiceIngestURL = "https://207-148-6-194.sslip.io/v/aa6edc0decd726d1aef6f3e7ec489965/upload"
+    static let voiceIngestURL = "https://207-148-6-194.sslip.io/a/ff23e757be4ad5cbdaed9e4859af35ce/upload"
 
     /// Anon key — client-scoped, same key the web app ships in plain JS.
-    static let anonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxidmFvc3lmaWtrcHZjd2tzaXBoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwMDg0MDksImV4cCI6MjA5MDU4NDQwOX0.Gh9whjmUPz4rdKYr5yo8ZHS0nSNpkQUOwdIladX6mG4"
+    static let anonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFucXphdHRib3FrZHd2ZndnaXJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5NDg3MDksImV4cCI6MjA5MDUyNDcwOX0.vDwrwWD__wJxeKfHC9ShJM0RGjHWL_cmbUXpdHEEwkE"
 
     /// Every PostgREST call carries these; Content-Type is harmless on reads and
     /// required on writes (without it PostgREST rejects the JSON body).

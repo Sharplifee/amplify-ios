@@ -7,7 +7,7 @@ tok = jwt.encode({"iss": os.environ["ASC_ISSUER_ID"], "iat": int(time.time()), "
 def get(path):
     r = urllib.request.Request("https://api.appstoreconnect.apple.com/v1" + path, headers={"Authorization": "Bearer " + tok})
     return json.loads(urllib.request.urlopen(r).read())
-app = get("/apps?filter[bundleId]=com.connor.scribbly")["data"][0]
+app = get("/apps?filter[bundleId]=com.connor.amplify")["data"][0]
 for b in get(f"/builds?filter[app]={app['id']}&sort=-uploadedDate&limit=4")["data"]:
     a = b["attributes"]; print("BUILD", a["version"], a["processingState"], a["uploadedDate"], "expired" if a.get("expired") else "")
 

@@ -11,7 +11,7 @@ import WidgetKit
 @available(iOS 18.0, *)
 struct RecordControl: ControlWidget {
     var body: some ControlWidgetConfiguration {
-        StaticControlConfiguration(kind: "com.connor.scribbly.record") {
+        StaticControlConfiguration(kind: "com.connor.amplify.record") {
             ControlWidgetButton(action: StartScribblyRecordingIntent()) {
                 Label("Record", image: "scribbly.mark")   // our own mark, not a stock mic
             }
@@ -26,7 +26,7 @@ struct RecordControl: ControlWidget {
 @available(iOS 18.0, *)
 struct StopControl: ControlWidget {
     var body: some ControlWidgetConfiguration {
-        StaticControlConfiguration(kind: "com.connor.scribbly.stop") {
+        StaticControlConfiguration(kind: "com.connor.amplify.stop") {
             ControlWidgetButton(action: StopScribblyRecordingIntent()) {
                 Label("Stop & Save", systemImage: "stop.circle.fill")
             }
@@ -41,7 +41,7 @@ struct StopControl: ControlWidget {
 @available(iOS 18.0, *)
 struct ToggleControl: ControlWidget {
     var body: some ControlWidgetConfiguration {
-        StaticControlConfiguration(kind: "com.connor.scribbly.toggle") {
+        StaticControlConfiguration(kind: "com.connor.amplify.toggle") {
             ControlWidgetButton(action: ToggleScribblyRecordingIntent()) {
                 Label("Start / Stop", systemImage: "record.circle")
             }
@@ -56,7 +56,7 @@ struct ToggleControl: ControlWidget {
 @available(iOS 18.0, *)
 struct PauseControl: ControlWidget {
     var body: some ControlWidgetConfiguration {
-        StaticControlConfiguration(kind: "com.connor.scribbly.pause") {
+        StaticControlConfiguration(kind: "com.connor.amplify.pause") {
             ControlWidgetButton(action: PauseScribblyRecordingIntent()) {
                 Label("Pause / Resume", systemImage: "pause.circle")
             }

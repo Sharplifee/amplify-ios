@@ -3,7 +3,7 @@ import WidgetKit
 
 // Watch face complications + Smart Stack widgets — one for every recording
 // action. The watch mic only records with the Scribbly app open, so each one
-// opens it straight into that action (scribbly-watch://<action>).
+// opens it straight into that action (amplify-watch://<action>).
 
 struct TickEntry: TimelineEntry { let date: Date }
 
@@ -17,7 +17,7 @@ struct TickProvider: TimelineProvider {
 
 enum WatchAction: String {
     case record, stop, toggle, open
-    var url: URL { URL(string: "scribbly-watch://\(rawValue)")! }
+    var url: URL { URL(string: "amplify-watch://\(rawValue)")! }
     var icon: String {
         switch self {
         case .record: return "record.circle.fill"
@@ -84,7 +84,7 @@ private let families: [WidgetFamily] = [.accessoryCircular, .accessoryCorner, .a
 
 struct RecordComplication: Widget {
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: "com.connor.scribbly.watch.record", provider: TickProvider()) { _ in ComplicationView(action: .record) }
+        StaticConfiguration(kind: "com.connor.amplify.watch.record", provider: TickProvider()) { _ in ComplicationView(action: .record) }
             .configurationDisplayName("Record")
             .description("Starts a Scribbly recording.")
             .supportedFamilies(families)
@@ -92,7 +92,7 @@ struct RecordComplication: Widget {
 }
 struct StopComplication: Widget {
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: "com.connor.scribbly.watch.stop", provider: TickProvider()) { _ in ComplicationView(action: .stop) }
+        StaticConfiguration(kind: "com.connor.amplify.watch.stop", provider: TickProvider()) { _ in ComplicationView(action: .stop) }
             .configurationDisplayName("Stop & Save")
             .description("Stops the recording and sends it to your library.")
             .supportedFamilies(families)
@@ -100,7 +100,7 @@ struct StopComplication: Widget {
 }
 struct ToggleComplication: Widget {
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: "com.connor.scribbly.watch.toggle", provider: TickProvider()) { _ in ComplicationView(action: .toggle) }
+        StaticConfiguration(kind: "com.connor.amplify.watch.toggle", provider: TickProvider()) { _ in ComplicationView(action: .toggle) }
             .configurationDisplayName("Start or Stop")
             .description("Starts recording, or stops and saves if one is running.")
             .supportedFamilies(families)
@@ -108,7 +108,7 @@ struct ToggleComplication: Widget {
 }
 struct OpenComplication: Widget {
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: "com.connor.scribbly.watch.open", provider: TickProvider()) { _ in ComplicationView(action: .open) }
+        StaticConfiguration(kind: "com.connor.amplify.watch.open", provider: TickProvider()) { _ in ComplicationView(action: .open) }
             .configurationDisplayName("Scribbly®")
             .description("Opens Scribbly on your watch.")
             .supportedFamilies(families)

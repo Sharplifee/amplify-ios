@@ -71,7 +71,7 @@ jobs:
           echo "PROFILE_UUID=$UUID" >> $GITHUB_ENV
           echo "PROFILE_NAME=$NAME" >> $GITHUB_ENV
           # point the app target at whichever profile was installed
-          sed -i '' "s/PROVISIONING_PROFILE_SPECIFIER = \"Scribbly CI\";/PROVISIONING_PROFILE_SPECIFIER = \"$NAME\";/" Scribbly.xcodeproj/project.pbxproj
+          sed -i '' "s/PROVISIONING_PROFILE_SPECIFIER = \"Amplify CI\";/PROVISIONING_PROFILE_SPECIFIER = \"$NAME\";/" Scribbly.xcodeproj/project.pbxproj
           grep -c "PROVISIONING_PROFILE_SPECIFIER = \"$NAME\"" Scribbly.xcodeproj/project.pbxproj || true
           echo "Installed profile: $NAME ($UUID)"
 
@@ -106,7 +106,7 @@ jobs:
           ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
         run: |
           set -euo pipefail
-          python3 ci/ensure_profile.py com.connor.scribbly.watchkitapp.widgets "ScribblyWatchWidgets CI" /tmp/cw.mobileprovision
+          python3 ci/ensure_profile.py com.connor.amplify.watchkitapp.widgets "AmplifyWatchWidgets CI" /tmp/cw.mobileprovision
           CUUID=$(security cms -D -i /tmp/cw.mobileprovision | plutil -extract UUID raw -)
           CNAME=$(security cms -D -i /tmp/cw.mobileprovision | plutil -extract Name raw -)
           cp /tmp/cw.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/$CUUID.mobileprovision
@@ -146,10 +146,10 @@ jobs:
             <key>uploadSymbols</key><true/>
             <key>provisioningProfiles</key>
             <dict>
-              <key>com.connor.scribbly</key><string>$PROFILE_NAME</string>
-              <key>com.connor.scribbly.ScribblyControls</key><string>$WIDGET_PROFILE_NAME</string>
-              <key>com.connor.scribbly.watchkitapp</key><string>$WATCH_PROFILE_NAME</string>
-              <key>com.connor.scribbly.watchkitapp.widgets</key><string>$COMPLICATION_PROFILE_NAME</string>
+              <key>com.connor.amplify</key><string>$PROFILE_NAME</string>
+              <key>com.connor.amplify.ScribblyControls</key><string>$WIDGET_PROFILE_NAME</string>
+              <key>com.connor.amplify.watchkitapp</key><string>$WATCH_PROFILE_NAME</string>
+              <key>com.connor.amplify.watchkitapp.widgets</key><string>$COMPLICATION_PROFILE_NAME</string>
             </dict>
           </dict></plist>
           PLIST

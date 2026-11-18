@@ -23,12 +23,12 @@ targets:
       - Shared
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.connor.scribbly
+        PRODUCT_BUNDLE_IDENTIFIER: com.connor.amplify
         INFOPLIST_FILE: Scribbly/Info.plist
         GENERATE_INFOPLIST_FILE: NO
         CODE_SIGN_ENTITLEMENTS: Scribbly/Scribbly.entitlements
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
-        PROVISIONING_PROFILE_SPECIFIER: "Scribbly CI"
+        PROVISIONING_PROFILE_SPECIFIER: "Amplify CI"
         TARGETED_DEVICE_FAMILY: "1,2"
     dependencies:
       - target: ScribblyControls
@@ -46,10 +46,10 @@ targets:
       - Scribbly/Fonts
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.connor.scribbly.ScribblyControls
+        PRODUCT_BUNDLE_IDENTIFIER: com.connor.amplify.ScribblyControls
         INFOPLIST_FILE: ScribblyControls/Info.plist
         GENERATE_INFOPLIST_FILE: NO
-        PROVISIONING_PROFILE_SPECIFIER: "ScribblyControls CI"
+        PROVISIONING_PROFILE_SPECIFIER: "AmplifyControls CI"
         SKIP_INSTALL: YES
 
   ScribblyWatch:
@@ -61,10 +61,10 @@ targets:
       - Scribbly/Fonts
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.connor.scribbly.watchkitapp
+        PRODUCT_BUNDLE_IDENTIFIER: com.connor.amplify.watchkitapp
         INFOPLIST_FILE: ScribblyWatch/Info.plist
         GENERATE_INFOPLIST_FILE: NO
-        PROVISIONING_PROFILE_SPECIFIER: "ScribblyWatch CI"
+        PROVISIONING_PROFILE_SPECIFIER: "AmplifyWatch CI"
         TARGETED_DEVICE_FAMILY: "4"
         SKIP_INSTALL: YES
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
@@ -80,9 +80,9 @@ targets:
       - Scribbly/Fonts
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.connor.scribbly.watchkitapp.widgets
+        PRODUCT_BUNDLE_IDENTIFIER: com.connor.amplify.watchkitapp.widgets
         INFOPLIST_FILE: ScribblyWatchWidgets/Info.plist
         GENERATE_INFOPLIST_FILE: NO
-        PROVISIONING_PROFILE_SPECIFIER: "ScribblyWatchWidgets CI"
+        PROVISIONING_PROFILE_SPECIFIER: "AmplifyWatchWidgets CI"
         TARGETED_DEVICE_FAMILY: "4"
         SKIP_INSTALL: YES

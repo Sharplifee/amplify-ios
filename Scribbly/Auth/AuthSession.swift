@@ -401,7 +401,7 @@ final class AuthSession: ObservableObject {
 enum Keychain {
     private static func query(_ key: String) -> [String: Any] {
         [kSecClass as String: kSecClassGenericPassword,
-         kSecAttrService as String: "com.connor.scribbly.auth",
+         kSecAttrService as String: "com.connor.amplify.auth",
          kSecAttrAccount as String: key]
     }
     static func write(_ key: String, _ data: Data) {
@@ -428,7 +428,7 @@ import LocalAuthentication
 /// Saved logins, one per account (keyed by email), each locked behind Face ID.
 /// Signing into a second account no longer overwrites the first one's login.
 enum FaceIDVault {
-    private static let service = "com.connor.scribbly.faceid"
+    private static let service = "com.connor.amplify.faceid"
     private static let lastKey = "scribbly.faceid.lastEmail"
     private static func q(_ account: String) -> [String: Any] {
         [kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: service, kSecAttrAccount as String: account]

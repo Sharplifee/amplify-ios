@@ -4,8 +4,8 @@ Prints the profile name; writes the .mobileprovision to argv[1]."""
 import base64, json, os, subprocess, sys, time, urllib.request, urllib.error
 import jwt  # pyjwt
 
-BUNDLE = "com.connor.scribbly"
-NAME = "Scribbly CI AD"
+BUNDLE = "com.connor.amplify"
+NAME = "Amplify CI AD"
 API = "https://api.appstoreconnect.apple.com/v1"
 key = base64.b64decode(os.environ["ASC_KEY_P8"]).decode()
 tok = jwt.encode({"iss": os.environ["ASC_ISSUER_ID"], "iat": int(time.time()), "exp": int(time.time()) + 1100,

@@ -9,7 +9,7 @@ import BackgroundTasks
 /// refresh while it's closed.
 final class StatusWatcher: ObservableObject {
     static let shared = StatusWatcher()
-    static let refreshTaskID = "com.connor.scribbly.refresh"
+    static let refreshTaskID = "com.connor.amplify.refresh"
 
     /// New library entries since you last opened Library.
     @Published private(set) var unseenLibrary = 0

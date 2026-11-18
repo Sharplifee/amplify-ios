@@ -9,9 +9,9 @@ import WatchConnectivity
 /// iPhone over WatchConnectivity.
 final class WatchRecorder: NSObject, ObservableObject, WCSessionDelegate, URLSessionTaskDelegate {
     static let shared = WatchRecorder()
-    static let uploadURL = URL(string: "https://207-148-6-194.sslip.io/v/aa6edc0decd726d1aef6f3e7ec489965/upload")!
+    static let uploadURL = URL(string: "https://207-148-6-194.sslip.io/a/ff23e757be4ad5cbdaed9e4859af35ce/upload")!
     private lazy var uploads: URLSession = {
-        let c = URLSessionConfiguration.background(withIdentifier: "com.connor.scribbly.watch.upload")
+        let c = URLSessionConfiguration.background(withIdentifier: "com.connor.amplify.watch.upload")
         c.sessionSendsLaunchEvents = true
         c.isDiscretionary = false
         return URLSession(configuration: c, delegate: self, delegateQueue: nil)

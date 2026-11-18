@@ -8,7 +8,7 @@ import PhotosUI
 struct ScribblyApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     init() {
-        EventLog.configure(url: "https://lbvaosyfikkpvcwksiph.supabase.co", apiKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxidmFvc3lmaWtrcHZjd2tzaXBoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwMDg0MDksImV4cCI6MjA5MDU4NDQwOX0.Gh9whjmUPz4rdKYr5yo8ZHS0nSNpkQUOwdIladX6mG4", project: "scribbly", accessToken: { AuthTokens.access })   // append-only event log (public.event_log)
+        EventLog.configure(url: "https://anqzattboqkdwvfwgirc.supabase.co", apiKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFucXphdHRib3FrZHd2ZndnaXJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5NDg3MDksImV4cCI6MjA5MDUyNDcwOX0.vDwrwWD__wJxeKfHC9ShJM0RGjHWL_cmbUXpdHEEwkE", project: "scribbly", accessToken: { AuthTokens.access })   // append-only event log (public.event_log)
         // Must exist before any view appears: Siri/Control Center/widgets can
         // launch Scribbly in the background just to start a recording.
         CrashReporter.shared.start()
@@ -144,7 +144,7 @@ struct RootView: View {
         }
         .onOpenURL { url in
             CrashReporter.shared.add("open url \(url.scheme ?? "")://\(url.host ?? "") file=\(url.isFileURL)")
-            if url.scheme == "scribbly" && url.host == "record" { arm(); return }
+            if url.scheme == "amplify" && url.host == "record" { arm(); return }
             // Files shared/opened into Scribbly (share sheet, Files app, AirDrop) → ingest.
             if url.isFileURL {
                 Task { await FileIngestModel.shared.handle(url) }
