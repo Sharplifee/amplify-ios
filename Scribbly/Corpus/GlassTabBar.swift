@@ -149,7 +149,7 @@ struct GlassTabBar: View {
                 ZStack {
                     Circle().fill(P.ink).frame(width: 42, height: 42)
                     if busy {
-                        ProgressView().tint(.black)
+                        ProgressView().tint(.white)
                     } else {
                         Image(systemName: "checkmark").font(.system(size: 16, weight: .heavy)).foregroundColor(.white)
                     }
