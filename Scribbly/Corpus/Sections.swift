@@ -535,7 +535,7 @@ struct IngestSection: View {
                     if !det.isEmpty {
                         HStack(spacing: 6) {
                             ForEach(det, id: \.self) { d in
-                                Text(d).monoLabel(9.5, color: Color(hex: 0xF2A57F))
+                                Text(d).monoLabel(9.5, color: Color(hex: 0x7CC4FF))
                                     .padding(.horizontal, 8).frame(height: 20)
                                     .background(P.accent.opacity(0.16)).clipShape(Capsule())
                             }
@@ -786,7 +786,7 @@ struct IngestSection: View {
                                 if n > 0 {
                                     status = "Retrying \(n) that didn't work…"
                                     startProgress(collection: cid, total: progressTotal)
-                                } else { status = "Couldn't reach the server to retry — Scribbly® will keep trying on its own." }
+                                } else { status = "Couldn't reach the server to retry — Legacy Prism will keep trying on its own." }
                             }
                         } label: {
                             Label("Retry \(progressFailed)", systemImage: "arrow.clockwise")
@@ -1206,7 +1206,7 @@ struct IngestSection: View {
                 return false
             } catch {
                 EventLog.shared.error("queue.server_unreachable", subject: url, error.localizedDescription)
-                status = "Couldn't reach the Scribbly® server (\(error.localizedDescription)). The link wasn't queued — try again."
+                status = "Couldn't reach the Legacy Prism server (\(error.localizedDescription)). The link wasn't queued — try again."
                 return false
             }
         }
@@ -1434,7 +1434,7 @@ private struct RecentList: View {
     }
     private func label(_ s: String) -> String {
         switch s {
-        case "pending": return "Queued on the Scribbly® server"
+        case "pending": return "Queued on the Legacy Prism server"
         case "transcribing": return "Transcribing…"
         case "saving": return "Saving to your library…"
         case "paused": return "Paused"

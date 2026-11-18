@@ -41,7 +41,7 @@ struct NotificationsSection: View {
                         NFRow(icon: "bell.badge.fill", label: "Notifications", value: s.statusText, good: s.allowed, chevron: true)
                     }.buttonStyle(.plain)
                     if s.status == .notDetermined {
-                        Text("Tap to allow — Scribbly® tells you when a transcript is ready, a batch finishes, or something needs you.")
+                        Text("Tap to allow — Legacy Prism tells you when a transcript is ready, a batch finishes, or something needs you.")
                             .font(.geist(size: 13)).foregroundColor(P.textSec).padding(.vertical, 10)
                     }
                 }
@@ -55,8 +55,8 @@ struct NotificationsSection: View {
                         Picker("", selection: $s.previews) { ForEach(NotifySettings.Previews.allCases) { Text($0.rawValue).tag($0) } }
                             .pickerStyle(.menu).tint(P.textDim)
                     }.padding(.vertical, 6).overlay(NFDivider(), alignment: .bottom)
-                    NFToggle(icon: "rectangle.topthird.inset.filled", label: "Banners While Using Scribbly®", isOn: $s.inAppBanners)
-                    NFToggle(icon: "iphone.radiowaves.left.and.right", label: "Vibrate While Using Scribbly®", isOn: $s.inAppHaptics)
+                    NFToggle(icon: "rectangle.topthird.inset.filled", label: "Banners While Using Legacy Prism", isOn: $s.inAppBanners)
+                    NFToggle(icon: "iphone.radiowaves.left.and.right", label: "Vibrate While Using Legacy Prism", isOn: $s.inAppHaptics)
                 }
 
                 NFHead("BADGES")
@@ -94,7 +94,7 @@ struct NotificationsSection: View {
                         NFRow(icon: "paperplane.fill", label: testSent ? "Sent — check the banner" : "Send a Test Notification", value: "", chevron: false)
                     }.buttonStyle(.plain)
                 }
-                NFFoot("Alerts come from this iPhone: they fire while Scribbly® is open, the moment your recording finishes, and on iOS background refresh while it's closed.")
+                NFFoot("Alerts come from this iPhone: they fire while Legacy Prism is open, the moment your recording finishes, and on iOS background refresh while it's closed.")
             }
             .padding(16)
             }
@@ -171,7 +171,7 @@ struct TonePicker: View {
                     }.buttonStyle(.plain)
                     toneRow(ToneLibrary.noneID, "None")
                 }
-                NFFoot("Add any song, voice memo or sound. It's saved in the Scribbly folder in Files, and you can trim it to the exact part you want (up to 29 seconds). Press and hold an added tone to delete it.")
+                NFFoot("Add any song, voice memo or sound. It's saved in the Legacy Prism folder in Files, and you can trim it to the exact part you want (up to 29 seconds). Press and hold an added tone to delete it.")
                 if let e = importError { Text(e).font(.geist(size: 13)).foregroundColor(P.danger) }
             }
             .padding(16)
@@ -264,7 +264,7 @@ struct VibrationPicker: View {
                     }.buttonStyle(.plain)
                 }
                 NFCard { row(HapticLibrary.noneID, "None") }.padding(.top, 8)
-                NFFoot("iOS plays its own vibration for alerts on the Lock Screen; your pattern plays whenever Scribbly® is open and an alert lands.")
+                NFFoot("iOS plays its own vibration for alerts on the Lock Screen; your pattern plays whenever Legacy Prism is open and an alert lands.")
             }
             .padding(16)
             }

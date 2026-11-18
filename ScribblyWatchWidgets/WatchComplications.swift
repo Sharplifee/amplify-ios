@@ -31,7 +31,7 @@ enum WatchAction: String {
         case .record: return "Record"
         case .stop:   return "Save"
         case .toggle: return "Rec/Stop"
-        case .open:   return "Scribbly"
+        case .open:   return "Legacy Prism"
         }
     }
     var long: String {
@@ -39,7 +39,7 @@ enum WatchAction: String {
         case .record: return "Start recording"
         case .stop:   return "Stop & save"
         case .toggle: return "Start or stop"
-        case .open:   return "Open Scribbly"
+        case .open:   return "Open Legacy Prism"
         }
     }
 }
@@ -68,7 +68,7 @@ struct ComplicationView: View {
                     Image(systemName: action.icon).font(.system(size: 26, weight: .semibold))
                         .foregroundStyle(Sinky.copper)
                     VStack(alignment: .leading, spacing: 1) {
-                        Text("Scribbly®").font(.system(size: 15, weight: .semibold))
+                        Text("Legacy Prism").font(.system(size: 15, weight: .semibold))
                         Text(action.long).font(.system(size: 13)).foregroundStyle(.secondary)
                     }
                     Spacer(minLength: 0)
@@ -86,7 +86,7 @@ struct RecordComplication: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: "com.connor.amplify.watch.record", provider: TickProvider()) { _ in ComplicationView(action: .record) }
             .configurationDisplayName("Record")
-            .description("Starts a Scribbly recording.")
+            .description("Starts a Legacy Prism recording.")
             .supportedFamilies(families)
     }
 }
@@ -109,8 +109,8 @@ struct ToggleComplication: Widget {
 struct OpenComplication: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: "com.connor.amplify.watch.open", provider: TickProvider()) { _ in ComplicationView(action: .open) }
-            .configurationDisplayName("Scribbly®")
-            .description("Opens Scribbly on your watch.")
+            .configurationDisplayName("Legacy Prism")
+            .description("Opens Legacy Prism on your watch.")
             .supportedFamilies(families)
     }
 }

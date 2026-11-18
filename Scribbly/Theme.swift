@@ -140,11 +140,11 @@ struct FinsBackground: View {
     var body: some View {
         ZStack {
             LinearGradient(stops: [
-                .init(color: Color(hex: 0x071113), location: 0),
-                .init(color: Color(hex: 0x1D4C54), location: 0.34),
-                .init(color: Color(hex: 0x4F9AA4), location: 0.52),
-                .init(color: Color(hex: 0xE8875A), location: 0.78),
-                .init(color: Color(hex: 0x2A160B), location: 1),
+                .init(color: Color(hex: 0x050E2B), location: 0),
+                .init(color: Color(hex: 0x0B2460), location: 0.34),
+                .init(color: Color(hex: 0x2B6BFF), location: 0.52),
+                .init(color: Color(hex: 0x2B6BFF), location: 0.78),
+                .init(color: Color(hex: 0x071233), location: 1),
             ], startPoint: UnitPoint(x: 0, y: 0.2), endPoint: UnitPoint(x: 1, y: 0.8))
             GeometryReader { geo in
                 Path { p in

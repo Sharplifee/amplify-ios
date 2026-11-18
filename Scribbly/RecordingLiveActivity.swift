@@ -153,7 +153,7 @@ final class RecordingLiveActivity {
                 Task { await a.update(content) }
             } else if ActivityAuthorizationInfo().areActivitiesEnabled {
                 do {
-                    let a = try Activity.request(attributes: RecordingActivityAttributes(title: "Scribbly"),
+                    let a = try Activity.request(attributes: RecordingActivityAttributes(title: "Legacy Prism"),
                                                  content: content, pushType: nil)
                     CrashReporter.shared.add("live activity started")
                     // Started from a widget, control, Siri or a Shortcut with

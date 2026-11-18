@@ -265,7 +265,7 @@ struct EntryDetail: View {
     /// plain-text transcript plus as much of it inline as fits — never a
     /// summary — and the full text is also put on the clipboard.
     private func fullBody(_ e: Entry) -> String {
-        "Here's the full transcript of \"\(e.title)\" from my Scribbly library (\(e.displayDate)). Let's discuss it.\n\n\(e.cleanTranscript ?? "")"
+        "Here's the full transcript of \"\(e.title)\" from my Legacy Prism library (\(e.displayDate)). Let's discuss it.\n\n\(e.cleanTranscript ?? "")"
     }
 
     private func chatURL(_ dest: Destination, _ text: String) -> URL? {
@@ -285,8 +285,8 @@ struct EntryDetail: View {
             let link = await shareLink(e.id)
             let words = (e.cleanTranscript ?? "").split { $0 == " " || $0 == "\n" }.count
             let head = link.map {
-                "Read the COMPLETE transcript of \"\(e.title)\" (\(words) words) from my Scribbly library here: \($0) — read all of it before answering. It's also below, as much as fits in this message:\n\n"
-            } ?? "Here's the transcript of \"\(e.title)\" from my Scribbly library (the full text is on my clipboard; I'll paste the rest):\n\n"
+                "Read the COMPLETE transcript of \"\(e.title)\" (\(words) words) from my Legacy Prism library here: \($0) — read all of it before answering. It's also below, as much as fits in this message:\n\n"
+            } ?? "Here's the transcript of \"\(e.title)\" from my Legacy Prism library (the full text is on my clipboard; I'll paste the rest):\n\n"
             // Fit as much transcript as the site's link limit allows.
             let transcript = e.cleanTranscript ?? ""
             var lo = 0, hi = transcript.count

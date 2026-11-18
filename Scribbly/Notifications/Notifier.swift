@@ -73,7 +73,7 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
         let open = UNNotificationAction(identifier: "open", title: "Open", options: [.foreground])
         let cats = NotifyKind.allCases.map {
             UNNotificationCategory(identifier: $0.rawValue, actions: [open], intentIdentifiers: [],
-                                   hiddenPreviewsBodyPlaceholder: "New in Scribbly®", options: [])
+                                   hiddenPreviewsBodyPlaceholder: "New in Legacy Prism", options: [])
         }
         center.setNotificationCategories(Set(cats))
         // Accounts made before notifications existed were never asked, so iOS
@@ -104,7 +104,7 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
         guard s.enabled(kind) else { return }
         let c = UNMutableNotificationContent()
         c.title = title
-        c.body = s.previews == .never ? "Open Scribbly® to see it." : body
+        c.body = s.previews == .never ? "Open Legacy Prism to see it." : body
         c.sound = ToneLibrary.sound(s.tone(kind))
         c.threadIdentifier = kind.threadID
         c.categoryIdentifier = kind.rawValue

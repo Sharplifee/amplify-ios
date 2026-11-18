@@ -4,14 +4,14 @@ import SwiftUI
 /// Control, Apple Watch). Same colours and fonts as the app's Theme/P.
 enum Sinky {
     static let ink     = Color(red: 0.953, green: 0.949, blue: 0.933)   // #F3F2EE
-    static let copper  = Color(red: 0.910, green: 0.529, blue: 0.353)   // #E8875A
+    static let copper  = Color(red: 0.169, green: 0.420, blue: 1.000)   // #E8875A
     /// Lit copper for keylines / borders on black, where #E8875A reads dim.
-    static let copperBright = Color(red: 1.0, green: 0.616, blue: 0.396) // #FF9D65
-    static let tan     = Color(red: 0.788, green: 0.635, blue: 0.478)   // #C9A27A
-    static let teal    = Color(red: 0.310, green: 0.639, blue: 0.682)   // #4FA3AE
-    static let surface = Color(red: 0.055, green: 0.059, blue: 0.063)   // #0E0F10
-    static let border  = Color(red: 0.141, green: 0.153, blue: 0.165)   // #24272A
-    static let dim     = Color(red: 0.486, green: 0.510, blue: 0.522)   // #7C8285
+    static let copperBright = Color(red: 0.357, green: 0.608, blue: 1.000) // #FF9D65
+    static let tan     = Color(red: 0.357, green: 0.549, blue: 1.000)   // #C9A27A
+    static let teal    = Color(red: 0.133, green: 0.827, blue: 0.933)   // #4FA3AE
+    static let surface = Color(red: 0.043, green: 0.086, blue: 0.188)   // #0E0F10
+    static let border  = Color(red: 0.118, green: 0.196, blue: 0.376)   // #24272A
+    static let dim     = Color(red: 0.498, green: 0.576, blue: 0.749)   // #7C8285
     static let good    = Color(red: 0.424, green: 0.788, blue: 0.631)   // #6CC9A1
 
     static var rule: LinearGradient {
@@ -82,7 +82,7 @@ struct SinkyFins: View {
                 .init(color: Color(red: 0.027, green: 0.067, blue: 0.075), location: 0),
                 .init(color: Color(red: 0.114, green: 0.298, blue: 0.329), location: 0.34),
                 .init(color: Color(red: 0.310, green: 0.604, blue: 0.643), location: 0.52),
-                .init(color: Color(red: 0.910, green: 0.529, blue: 0.353), location: 0.78),
+                .init(color: Color(red: 0.169, green: 0.420, blue: 1.000), location: 0.78),
                 .init(color: Color(red: 0.165, green: 0.086, blue: 0.043), location: 1),
             ], startPoint: UnitPoint(x: 0, y: 0.2), endPoint: UnitPoint(x: 1, y: 0.8))
             GeometryReader { geo in

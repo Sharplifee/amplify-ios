@@ -375,7 +375,7 @@ struct MoreSection: View {
                 tap(icon: "sparkle.magnifyingglass", title: "Query", sub: "Ask anything across your whole library.", go: .query)
                 tap(icon: "waveform.path.ecg", title: "Activity", sub: "What's processing, what's saved, and what needs a retry.", badge: max(up.pendingCount, status.activeJobs + status.unseenFailures), go: .jobs)
                 tap(icon: "applewatch", title: "Apple Watch", sub: "Record from your wrist.", go: .watch)
-                tap(icon: "bubble.left.and.text.bubble.right.fill", title: "Tell Claude", sub: "Say or type what to change in Scribbly. Claude builds it.", go: .tellClaude)
+                tap(icon: "bubble.left.and.text.bubble.right.fill", title: "Tell Claude", sub: "Say or type what to change in Legacy Prism. Claude builds it.", go: .tellClaude)
                 tap(icon: "gearshape.fill", title: "Settings", sub: "Account, text size, notifications and recording.", go: .settings)
             }
             .padding(16)

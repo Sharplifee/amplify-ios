@@ -13,9 +13,9 @@
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
-	<key>CFBundleSpokenName</key><string>Scribbly</string>
+	<key>CFBundleSpokenName</key><string>Legacy Prism</string>
 	<key>CFBundleDisplayName</key>
-	<string>Amplify</string>
+	<string>Legacy Prism</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIconName</key>
@@ -69,7 +69,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSFaceIDUsageDescription</key>
-	<string>Signs you in to Scribbly with Face ID.</string>
+	<string>Signs you in to Legacy Prism with Face ID.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Needed to record voice notes.</string>
 	<key>NSSupportsLiveActivities</key>

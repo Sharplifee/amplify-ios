@@ -466,7 +466,7 @@ enum FaceIDVault {
             DispatchQueue.global(qos: .userInitiated).async {
                 for account in candidates(email) {
                     var item = q(account)
-                    let ctx = LAContext(); ctx.localizedReason = "Sign in to Scribbly"
+                    let ctx = LAContext(); ctx.localizedReason = "Sign in to Legacy Prism"
                     item[kSecUseAuthenticationContext as String] = ctx
                     item[kSecReturnData as String] = true
                     item[kSecMatchLimit as String] = kSecMatchLimitOne

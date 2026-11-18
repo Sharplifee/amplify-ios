@@ -82,7 +82,7 @@ struct SettingsSection: View {
                                 .accessibilityAddTraits(on ? .isSelected : [])
                             }
                         }
-                        Text("This is the size your text will appear throughout Scribbly. It stays until you change it.")
+                        Text("This is the size your text will appear throughout Legacy Prism. It stays until you change it.")
                             .font(.geist(size: 14)).foregroundColor(P.textSec)
                             .fixedSize(horizontal: false, vertical: true)
                     }
@@ -122,7 +122,7 @@ struct SettingsSection: View {
                 }
                 header("SERVER")
                 card {
-                    plainRow("Scribbly® server", serverOK == nil ? "Checking…" : (serverOK! ? "Online" : "Unreachable"), good: serverOK == true)
+                    plainRow("Legacy Prism server", serverOK == nil ? "Checking…" : (serverOK! ? "Online" : "Unreachable"), good: serverOK == true)
                     plainRow("Library", entryCount > 0
                              ? "\(entryCount.formatted()) entries" + (countFailed ? " (last known)" : "")
                              : (countFailed ? "Couldn't count" : "Counting…"))
@@ -142,7 +142,7 @@ struct SettingsSection: View {
             Button("Save") { let n = nameDraft; Task { await auth.rename(n) } }
             Button("Cancel", role: .cancel) {}
         }
-        .confirmationDialog("Sign out of Scribbly?", isPresented: $confirmSignOut, titleVisibility: .visible) {
+        .confirmationDialog("Sign out of Legacy Prism?", isPresented: $confirmSignOut, titleVisibility: .visible) {
             Button("Sign out", role: .destructive) { BottomChrome.shared.moreSub = nil; auth.signOut() }
         }
         .task {
@@ -201,7 +201,7 @@ struct WatchInfoSection: View {
                     .background(P.surface).clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(P.edge))
                 Text("INSTALL").sectionHead().padding(.top, 8)
-                Text("Open the Watch app on this iPhone → Available Apps → Scribbly → Install.")
+                Text("Open the Watch app on this iPhone → Available Apps → Legacy Prism → Install.")
                     .font(.geist(size: 14)).foregroundColor(P.textSec)
                     .padding(14).frame(maxWidth: .infinity, alignment: .leading)
                     .background(P.surface).clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))

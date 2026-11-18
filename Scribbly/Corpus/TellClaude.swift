@@ -78,7 +78,7 @@ final class TellClaude: ObservableObject {
         guard canRecord else { message = "Finish the recording in progress first."; return }
         Recorder.shared.requestPermission { ok in
             Task { @MainActor in
-                guard ok else { self.message = "Scribbly needs microphone access for spoken notes."; return }
+                guard ok else { self.message = "Legacy Prism needs microphone access for spoken notes."; return }
                 self.beginRecording()
             }
         }
@@ -172,7 +172,7 @@ struct TellClaudeSection: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
-                PageHeader(title: "Tell Claude", subtitle: "Changes you want made to Scribbly",
+                PageHeader(title: "Tell Claude", subtitle: "Changes you want made to Legacy Prism",
                            back: { BottomChrome.shared.moreSub = nil })
                 VStack(alignment: .leading, spacing: 10) {
                     Text("SPEAK").sectionHead()

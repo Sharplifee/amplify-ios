@@ -17,8 +17,8 @@ struct RecordControl: ControlWidget {
             }
             .tint(Sinky.copper)
         }
-        .displayName("Scribbly Record")
-        .description("Start a Scribbly recording instantly, even when locked.")
+        .displayName("Legacy Prism Record")
+        .description("Start a Legacy Prism recording instantly, even when locked.")
     }
 }
 
@@ -32,7 +32,7 @@ struct StopControl: ControlWidget {
             }
             .tint(Sinky.copper)
         }
-        .displayName("Scribbly Stop & Save")
+        .displayName("Legacy Prism Stop & Save")
         .description("Stops the recording in progress and saves it to your library.")
     }
 }
@@ -47,7 +47,7 @@ struct ToggleControl: ControlWidget {
             }
             .tint(Sinky.copper)
         }
-        .displayName("Scribbly Start or Stop")
+        .displayName("Legacy Prism Start or Stop")
         .description("Tap to start recording; tap again to stop and save.")
     }
 }
@@ -62,7 +62,7 @@ struct PauseControl: ControlWidget {
             }
             .tint(Sinky.copper)
         }
-        .displayName("Scribbly Pause / Resume")
+        .displayName("Legacy Prism Pause / Resume")
         .description("Pauses the recording in progress, or resumes it.")
     }
 }

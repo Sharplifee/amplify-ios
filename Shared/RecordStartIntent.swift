@@ -16,13 +16,13 @@ private enum Run {
     /// Starts recording and waits (up to 4 s) for it to be live.
     static func start() async -> String {
         guard let handler = RecordingControl.handler else {
-            log("start", "no_handler"); return "Open Scribbly once to finish setting up, then try again."
+            log("start", "no_handler"); return "Open Legacy Prism once to finish setting up, then try again."
         }
         if RecordingControl.micAllowed?() == false {
-            log("start", "mic_denied"); return "Scribbly needs microphone access — open Scribbly to allow it."
+            log("start", "mic_denied"); return "Legacy Prism needs microphone access — open Legacy Prism to allow it."
         }
         if RecordingControl.isActive?() == true {
-            log("start", "already"); return "Scribbly is already recording."
+            log("start", "already"); return "Legacy Prism is already recording."
         }
         handler("start")
         for _ in 0..<40 {
@@ -30,19 +30,19 @@ private enum Run {
             try? await Task.sleep(nanoseconds: 100_000_000)
         }
         log("start", "timeout")
-        return "Scribbly couldn't start recording — open the app and try again."
+        return "Legacy Prism couldn't start recording — open the app and try again."
     }
     static func stop() -> String {
         guard RecordingControl.isActive?() == true, let handler = RecordingControl.handler else {
-            log("stop", "idle"); return "Scribbly isn't recording."
+            log("stop", "idle"); return "Legacy Prism isn't recording."
         }
         handler("finish")
         log("stop", "ok")
-        return "Saved to your Scribbly library."
+        return "Saved to your Legacy Prism library."
     }
     static func pause() -> String {
         guard RecordingControl.isActive?() == true, let handler = RecordingControl.handler else {
-            log("pause", "idle"); return "Scribbly isn't recording."
+            log("pause", "idle"); return "Legacy Prism isn't recording."
         }
         let wasRecording = RecordingControl.isRecording?() == true
         handler("toggle")
@@ -54,7 +54,7 @@ private enum Run {
 /// Start recording right away, even locked.
 @available(iOS 18.0, *)
 struct StartScribblyRecordingIntent: AudioRecordingIntent {
-    static let title: LocalizedStringResource = "Start Scribbly Recording"
+    static let title: LocalizedStringResource = "Start Legacy Prism Recording"
     static let description = IntentDescription("Starts recording right away, even from the Lock Screen.")
     static let openAppWhenRun: Bool = false
     static let authenticationPolicy: IntentAuthenticationPolicy = .alwaysAllowed
@@ -67,7 +67,7 @@ struct StartScribblyRecordingIntent: AudioRecordingIntent {
 /// Stop the recording in progress and save it.
 @available(iOS 18.0, *)
 struct StopScribblyRecordingIntent: LiveActivityIntent {
-    static let title: LocalizedStringResource = "Stop Scribbly Recording"
+    static let title: LocalizedStringResource = "Stop Legacy Prism Recording"
     static let description = IntentDescription("Stops the recording in progress and saves it to your library.")
     static let openAppWhenRun: Bool = false
     static let authenticationPolicy: IntentAuthenticationPolicy = .alwaysAllowed
@@ -80,8 +80,8 @@ struct StopScribblyRecordingIntent: LiveActivityIntent {
 /// One trigger for both: starts when idle, stops & saves when recording.
 @available(iOS 18.0, *)
 struct ToggleScribblyRecordingIntent: AudioRecordingIntent {
-    static let title: LocalizedStringResource = "Start or Stop Scribbly Recording"
-    static let description = IntentDescription("Starts recording if Scribbly is idle; stops and saves if it's recording.")
+    static let title: LocalizedStringResource = "Start or Stop Legacy Prism Recording"
+    static let description = IntentDescription("Starts recording if Legacy Prism is idle; stops and saves if it's recording.")
     static let openAppWhenRun: Bool = false
     static let authenticationPolicy: IntentAuthenticationPolicy = .alwaysAllowed
     init() {}
@@ -96,7 +96,7 @@ struct ToggleScribblyRecordingIntent: AudioRecordingIntent {
 /// Pause, or resume if paused.
 @available(iOS 18.0, *)
 struct PauseScribblyRecordingIntent: LiveActivityIntent {
-    static let title: LocalizedStringResource = "Pause or Resume Scribbly Recording"
+    static let title: LocalizedStringResource = "Pause or Resume Legacy Prism Recording"
     static let description = IntentDescription("Pauses the recording in progress, or resumes it if paused.")
     static let openAppWhenRun: Bool = false
     static let authenticationPolicy: IntentAuthenticationPolicy = .alwaysAllowed

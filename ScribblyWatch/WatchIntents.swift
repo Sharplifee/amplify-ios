@@ -5,8 +5,8 @@ import AppIntents
 /// so these bring the Scribbly watch app forward and start or stop it there.
 
 struct StartWatchRecordingIntent: AppIntent {
-    static let title: LocalizedStringResource = "Start Scribbly Recording"
-    static let description = IntentDescription("Opens Scribbly on your watch and starts recording.")
+    static let title: LocalizedStringResource = "Start Legacy Prism Recording"
+    static let description = IntentDescription("Opens Legacy Prism on your watch and starts recording.")
     static let openAppWhenRun: Bool = true
     init() {}
     @MainActor func perform() async throws -> some IntentResult {
@@ -17,7 +17,7 @@ struct StartWatchRecordingIntent: AppIntent {
 }
 
 struct StopWatchRecordingIntent: AppIntent {
-    static let title: LocalizedStringResource = "Stop Scribbly Recording"
+    static let title: LocalizedStringResource = "Stop Legacy Prism Recording"
     static let description = IntentDescription("Stops the watch recording and sends it to your library.")
     static let openAppWhenRun: Bool = true
     init() {}
@@ -29,7 +29,7 @@ struct StopWatchRecordingIntent: AppIntent {
 }
 
 struct ToggleWatchRecordingIntent: AppIntent {
-    static let title: LocalizedStringResource = "Start or Stop Scribbly Recording"
+    static let title: LocalizedStringResource = "Start or Stop Legacy Prism Recording"
     static let description = IntentDescription("Starts recording on your watch, or stops and saves if one is running.")
     static let openAppWhenRun: Bool = true
     init() {}

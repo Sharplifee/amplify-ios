@@ -59,20 +59,20 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     }
 }
 
-// MARK: - Palette (Sinky: true black, warm ink, copper + teal)
+// MARK: - Palette (Legacy Prism: deep navy, light ink, Legacy blues + cyan)
 
 enum P {
-    static let bg = Color.black
-    static let surface = Color(hex: 0x0E0F10)
-    static let surface2 = Color(hex: 0x16181A)
-    static let border = Color(hex: 0x24272A)
-    static let divider = Color(hex: 0x1A1C1E)
+    static let bg = Color(hex: 0x050B1F)
+    static let surface = Color(hex: 0x0B1630)
+    static let surface2 = Color(hex: 0x112042)
+    static let border = Color(hex: 0x1E3260)
+    static let divider = Color(hex: 0x14244A)
     static let ink = Color(hex: 0xF3F2EE)
-    static let textSec = Color(hex: 0xA3A8AB)
-    static let textDim = Color(hex: 0x7C8285)
-    static let accent = Color(hex: 0xE8875A)      // copper
-    static let tan = Color(hex: 0xC9A27A)
-    static let teal = Color(hex: 0x4FA3AE)
+    static let textSec = Color(hex: 0xA9BEE6)
+    static let textDim = Color(hex: 0x7F93BF)
+    static let accent = Color(hex: 0x2B6BFF)      // copper
+    static let tan = Color(hex: 0x5B8CFF)
+    static let teal = Color(hex: 0x22D3EE)
     /// Kept for existing call sites; Sinky's second colour is teal.
     static let magenta = teal
     static let danger = Color(hex: 0xF07167)

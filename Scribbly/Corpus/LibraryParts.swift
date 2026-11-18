@@ -47,14 +47,14 @@ struct PillarTile: View {
 
     /// Icon and tone for an entry's type (YouTube takes its creator's tone).
     static func style(for e: Entry, creator: String?) -> (symbol: String, tone: PillarRGB) {
-        if e.isVoice { return ("waveform", PillarRGB(0xE8875A)) }
-        if e.isPodcast { return ("mic.fill", PillarRGB(0xC9A27A)) }
+        if e.isVoice { return ("waveform", PillarRGB(0x2B6BFF)) }
+        if e.isPodcast { return ("mic.fill", PillarRGB(0x5B8CFF)) }
         switch e.displayType {
         case "YouTube":   return ("play.fill", PillarPalette.tone(for: creator ?? "YouTube"))
-        case "Instagram": return ("camera.fill", PillarRGB(0x4FA3AE))
-        case "Note":      return ("note.text", PillarRGB(0xC9A27A))
-        case "Article":   return ("doc.text.fill", PillarRGB(0xDDBE98))
-        default:          return ("doc.fill", PillarRGB(0x7CC3CB))
+        case "Instagram": return ("camera.fill", PillarRGB(0x22D3EE))
+        case "Note":      return ("note.text", PillarRGB(0x5B8CFF))
+        case "Article":   return ("doc.text.fill", PillarRGB(0xB9DEFF))
+        default:          return ("doc.fill", PillarRGB(0x7FD9EE))
         }
     }
 }
@@ -194,7 +194,7 @@ struct FilterToken: View {
                 Text(label).font(.geist(size: 12, weight: .medium)).lineLimit(1)
                 Image(systemName: "xmark").font(.system(size: 9, weight: .bold))
             }
-            .foregroundColor(Color(hex: 0xF2A57F))
+            .foregroundColor(Color(hex: 0x7CC4FF))
             .padding(.horizontal, 10).frame(height: 26)
             .background(P.accent.opacity(0.14)).clipShape(Capsule())
             .overlay(Capsule().stroke(P.accent.opacity(0.35)))
@@ -404,7 +404,7 @@ struct LibraryNotice: View {
 
     var body: some View {
         VStack(spacing: 10) {
-            PillarTile(tone: PillarRGB(0xC9A27A), symbol: symbol, size: 46, corner: 12)
+            PillarTile(tone: PillarRGB(0x5B8CFF), symbol: symbol, size: 46, corner: 12)
             Text(title).font(.geist(size: 16, weight: .semibold)).foregroundColor(P.ink)
                 .multilineTextAlignment(.center)
             Text(message).font(.geist(size: 13)).foregroundColor(P.textSec)

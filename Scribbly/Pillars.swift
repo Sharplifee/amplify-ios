@@ -37,8 +37,8 @@ struct PillarRGB {
 enum PillarPalette {
     /// Deep copper → copper → light copper → tan → sand → teal → light teal → deep teal.
     static let ramp: [PillarRGB] = [
-        PillarRGB(0x8A4122), PillarRGB(0xE8875A), PillarRGB(0xF2A57F), PillarRGB(0xC9A27A),
-        PillarRGB(0xDDBE98), PillarRGB(0x4FA3AE), PillarRGB(0x7CC3CB), PillarRGB(0x235E67)
+        PillarRGB(0x0A1C4A), PillarRGB(0x2B6BFF), PillarRGB(0x7CC4FF), PillarRGB(0x5B8CFF),
+        PillarRGB(0xB9DEFF), PillarRGB(0x22D3EE), PillarRGB(0x7FD9EE), PillarRGB(0x1E4FD8)
     ]
     /// Brightness steps cycled across the row, so no two neighbours share a tone.
     static let steps: [Double] = [0, -0.26, 0.10, -0.12, 0.16, -0.34]
@@ -223,12 +223,12 @@ struct PageHeader: View {
 
     private var wordmark: some View {
         HStack(alignment: .top, spacing: 0) {
-            Text("Scribbly").font(.geist(size: 30, weight: .semibold)).tracking(-1.3).foregroundColor(P.ink)
+            Text("Legacy Prism").font(.geist(size: 30, weight: .semibold)).tracking(-1.3).foregroundColor(P.ink)
             // ® a touch larger and crisper, tucked down-left against the "y".
             Text("®").font(.geist(size: 13, weight: .medium)).foregroundColor(P.ink.opacity(0.85))
                 .offset(x: -1, y: 2)
         }
-        .accessibilityLabel("Scribbly")
+        .accessibilityLabel("Legacy Prism")
         // Sit on the text baseline, so the gap to the banner matches the back button's.
         .alignmentGuide(.bottom) { d in d[.lastTextBaseline] }
     }

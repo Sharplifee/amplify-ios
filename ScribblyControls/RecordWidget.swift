@@ -46,14 +46,14 @@ struct RecordWidgetView: View {
                 HStack(spacing: 8) {
                     Image(systemName: "record.circle.fill").font(.system(size: 26))
                     VStack(alignment: .leading, spacing: 1) {
-                        Text("Scribbly").font(Sinky.font(15, .semibold))
+                        Text("Legacy Prism").font(Sinky.font(15, .semibold))
                         Text("TAP · TAP AGAIN TO SAVE").font(Sinky.font(10, .medium, mono: true)).tracking(0.6)
                     }
                     Spacer(minLength: 0)
                 }
             }
         case .accessoryInline:
-            RecordTap { Label("Record · Scribbly", systemImage: "record.circle") }
+            RecordTap { Label("Record · Legacy Prism", systemImage: "record.circle") }
         case .systemMedium:
             HStack(spacing: 12) {
                 RecordTap {
@@ -74,7 +74,7 @@ struct RecordWidgetView: View {
         case .systemLarge:
             RecordTap {
                 VStack(alignment: .leading, spacing: 0) {
-                    Text("Scribbly").font(Sinky.font(22, .semibold)).tracking(-0.8).foregroundColor(Sinky.ink)
+                    Text("Legacy Prism").font(Sinky.font(22, .semibold)).tracking(-0.8).foregroundColor(Sinky.ink)
                     Spacer()
                     HStack { Spacer(); SinkyRecordMark(size: 110); Spacer() }
                     Spacer()
@@ -135,7 +135,7 @@ struct RecordWidget: Widget {
                 ZStack { SinkyFins().clipShape(ContainerRelativeShape()); RecordWidgetView().padding() }
             }
         }
-        .configurationDisplayName("Scribbly Record")
+        .configurationDisplayName("Legacy Prism Record")
         .description("Tap to record, tap again to stop and save — Home Screen, Lock Screen, StandBy and CarPlay.")
         .supportedFamilies([.systemSmall, .systemMedium, .systemLarge,
                             .accessoryCircular, .accessoryRectangular, .accessoryInline])

@@ -22,7 +22,7 @@ enum NotifyKind: String, CaseIterable, Identifiable, Codable {
     var detail: String {
         switch self {
         case .transcriptReady: return "A recording, video or file is transcribed, summarized and in your library."
-        case .recordingSaved:  return "A recording left this iPhone and is on the Scribbly® server."
+        case .recordingSaved:  return "A recording left this iPhone and is on the Legacy Prism server."
         case .needsAttention:  return "Something didn't work — no speech found, or a job failed."
         case .batchFinished:   return "A channel, playlist or set of links finished fetching."
         case .watchMemo:       return "A memo recorded on your Apple Watch arrived on this iPhone."
@@ -86,7 +86,7 @@ enum ToneLibrary {
 
     /// The three Scribbly® defaults, shown first.
     static let defaults: [Tone] = [
-        Tone(id: "scribbly", name: "Scribbly", onsets: [0, 0.11, 0.22]),
+        Tone(id: "scribbly", name: "Legacy Prism", onsets: [0, 0.11, 0.22]),
         Tone(id: "ripple", name: "Ripple", onsets: [0, 0.07, 0.14, 0.21, 0.28, 0.35]),
         Tone(id: "glass", name: "Glass", onsets: [0, 0.09]),
     ]
@@ -138,7 +138,7 @@ enum ToneLibrary {
         if id == noneID { return "None" }
         if let t = bundled.first(where: { $0.id == id }) { return t.name }
         if let c = customs.first(where: { $0.id == id }) { return c.name }
-        return "Scribbly"
+        return "Legacy Prism"
     }
     static func onsets(_ id: String) -> [Double] {
         if let t = bundled.first(where: { $0.id == id }) { return t.onsets }

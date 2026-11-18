@@ -44,7 +44,7 @@ struct Wordmark: View {
     var size: CGFloat = 30
     var body: some View {
         HStack(alignment: .top, spacing: 1) {
-            Text("Scribbly").font(.custom("Geist-SemiBold", fixedSize: size)).foregroundColor(P.ink)
+            Text("Legacy Prism").font(.custom("Geist-SemiBold", fixedSize: size)).foregroundColor(P.ink)
             Text("®").font(.custom("Geist-Regular", fixedSize: size * 0.36)).foregroundColor(P.ink).padding(.top, size * 0.12)
         }
     }
@@ -328,7 +328,7 @@ struct OnboardingView: View {
                     }
                     Spacer()
                     Button { next() } label: {
-                        Text(step == 2 ? (saving ? "Saving…" : "Start using Scribbly") : "Continue")
+                        Text(step == 2 ? (saving ? "Saving…" : "Start using Legacy Prism") : "Continue")
                             .font(.geist(size: 17, weight: .semibold)).foregroundColor(.black)
                             .padding(.horizontal, 26).frame(height: 52)
                             .background(Capsule().fill(P.ink))
@@ -385,7 +385,7 @@ struct OnboardingView: View {
             }
             VStack(alignment: .leading, spacing: 6) {
                 Text("Morning walk notes").font(.geist(size: 17, weight: .semibold)).foregroundColor(P.ink)
-                Text("This is the size your text will appear throughout Scribbly.")
+                Text("This is the size your text will appear throughout Legacy Prism.")
                     .font(.geist(size: 15)).foregroundColor(P.textSec)
                     .fixedSize(horizontal: false, vertical: true)
             }
@@ -398,7 +398,7 @@ struct OnboardingView: View {
     private var permissionStep: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Three quick permissions").font(.geist(size: 30, weight: .semibold)).foregroundColor(P.ink)
-            Text("Scribbly needs the microphone to record. Location is optional — it labels where a recording happened. Notifications tell you the moment a transcript is ready.")
+            Text("Legacy Prism needs the microphone to record. Location is optional — it labels where a recording happened. Notifications tell you the moment a transcript is ready.")
                 .font(.geist(size: 15)).foregroundColor(P.textSec).fixedSize(horizontal: false, vertical: true)
             permRow("Microphone", icon: "mic.fill", done: micAsked) {
                 AVAudioSession.sharedInstance().requestRecordPermission { _ in

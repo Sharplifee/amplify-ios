@@ -38,7 +38,7 @@ enum RecordingControl {
 @available(iOS 17.0, *)
 struct RecordingPauseIntent: LiveActivityIntent {
     static let title: LocalizedStringResource = "Pause or Resume Recording"
-    static let description = IntentDescription("The pause button on Scribbly's Live Activity.")
+    static let description = IntentDescription("The pause button on Legacy Prism's Live Activity.")
     /// Only for the Live Activity's own button — hidden from Shortcuts/Siri
     /// (the full "Pause or Resume Scribbly Recording" is the one to use there).
     static let isDiscoverable: Bool = false
@@ -52,7 +52,7 @@ struct RecordingPauseIntent: LiveActivityIntent {
 @available(iOS 17.0, *)
 struct RecordingFinishIntent: LiveActivityIntent {
     static let title: LocalizedStringResource = "Finish Recording"
-    static let description = IntentDescription("The ✓ button on Scribbly's Live Activity.")
+    static let description = IntentDescription("The ✓ button on Legacy Prism's Live Activity.")
     /// Live Activity button only — "Stop Scribbly Recording" is the Shortcuts one.
     static let isDiscoverable: Bool = false
     init() {}

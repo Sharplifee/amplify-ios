@@ -119,7 +119,7 @@ final class Recorder: NSObject, ObservableObject {
             guard self.state == .idle else { return }
             guard granted else {
                 self.appendTo = nil
-                self.lastError = "Microphone access is off. Enable it in Settings › Scribbly › Microphone."
+                self.lastError = "Microphone access is off. Enable it in Settings › Legacy Prism › Microphone."
                 return
             }
             do {
@@ -334,7 +334,7 @@ final class Recorder: NSObject, ObservableObject {
         let r = try AVAudioRecorder(url: url, settings: settings)
         r.delegate = self
         r.isMeteringEnabled = true
-        guard r.record() else { throw NSError(domain: "Scribbly", code: 1,
+        guard r.record() else { throw NSError(domain: "Legacy Prism", code: 1,
               userInfo: [NSLocalizedDescriptionKey: "AVAudioRecorder refused to start"]) }
         recorder = r
         segmentStartedAt = Date()

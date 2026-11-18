@@ -641,7 +641,7 @@ struct LibrarySection: View {
                     text += "\n"
                 }
                 let url = FileManager.default.temporaryDirectory
-                    .appendingPathComponent("Scribbly Library \(EntryDates.display.string(from: Date())).txt")
+                    .appendingPathComponent("Legacy Prism Library \(EntryDates.display.string(from: Date())).txt")
                 try text.write(to: url, atomically: true, encoding: .utf8)
                 exportURL = url
             } catch {

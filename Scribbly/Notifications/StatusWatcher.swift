@@ -113,7 +113,7 @@ final class StatusWatcher: ObservableObject {
             Notifier.shared.post(watch ? .watchMemo : .recordingSaved,
                                  title: watch ? "Watch memo received" : "Recording uploaded",
                                  body: (title.map { "“\($0)” " } ?? "Your recording ")
-                                     + "is on the Scribbly® server and transcribing now.")
+                                     + "is on the Legacy Prism server and transcribing now.")
         }
         // A failed upload isn't a failure yet: the recording stays on this
         // iPhone and the uploader retries it by itself — no alert.
@@ -201,7 +201,7 @@ final class StatusWatcher: ObservableObject {
             Notifier.shared.post(stuck > 0 ? .needsAttention : .batchFinished,
                                  title: stuck > 0 ? "Batch finished — \(stuck) need you" : "Batch finished",
                                  body: stuck > 0
-                                    ? "\(b.name) — \(stuck) couldn't be saved after 4 tries. Tap Retry on Home, or Scribbly® tries again in its daily checkup."
+                                    ? "\(b.name) — \(stuck) couldn't be saved after 4 tries. Tap Retry on Home, or Legacy Prism tries again in its daily checkup."
                                     : "\(b.name) — everything is fetched and in your library.",
                                  id: "batch-\(id)")
         }
