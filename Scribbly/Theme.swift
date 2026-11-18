@@ -120,7 +120,7 @@ struct SinkyPrimaryButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.geist(size: 15, weight: .semibold))
-            .foregroundColor(enabled ? .black : P.textDim)
+            .foregroundColor(enabled ? .white : P.textDim)
             .frame(maxWidth: .infinity).frame(height: height)
             .background(RoundedRectangle(cornerRadius: 12, style: .continuous)
                 .fill(enabled ? P.ink : P.surface2))

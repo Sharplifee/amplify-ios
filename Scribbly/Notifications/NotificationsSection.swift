@@ -382,7 +382,7 @@ struct VibrationRecorder: View {
             }
             Button("Cancel", role: .cancel) {}
         }
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(.light)
     }
 
     private func reset() { events = []; start = nil; elapsed = 0; recording = true }
@@ -537,7 +537,7 @@ struct ToneTrimmer: View {
                 Spacer()
                 Button { save(preview: true) } label: {
                     Label(changed ? "Save & Play" : "Play", systemImage: "play.fill")
-                        .font(.geist(size: 13, weight: .semibold)).foregroundColor(.black)
+                        .font(.geist(size: 13, weight: .semibold)).foregroundColor(.white)
                         .padding(.horizontal, 12).frame(height: 30)
                         .background(Capsule().fill(P.ink))
                 }

@@ -218,7 +218,7 @@ struct FilterButtonLabel: View {
                 .contentShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                 .sinkyGlass(RoundedRectangle(cornerRadius: 12, style: .continuous), interactive: true)
             if active > 0 {
-                Text("\(active)").font(.geist(size: 10, weight: .bold)).foregroundColor(.black)
+                Text("\(active)").font(.geist(size: 10, weight: .bold)).foregroundColor(.white)
                     .frame(minWidth: 16, minHeight: 16)
                     .background(Circle().fill(P.accent))
                     .offset(x: 4, y: -4)

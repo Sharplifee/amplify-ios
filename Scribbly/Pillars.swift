@@ -234,7 +234,7 @@ struct PageHeader: View {
         HStack(alignment: .top, spacing: 22) {
             ForEach(Array(stats.enumerated()), id: \.offset) { _, s in
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(s.0).font(.geist(size: 20, weight: .semibold)).tracking(-0.6).foregroundColor(P.ink)
+                    Text(s.0).font(.geist(size: 20, weight: .semibold)).tracking(-0.6).foregroundColor(P.onBanner)
                         .monospacedDigit().lineLimit(1).minimumScaleFactor(0.7)
                     Text(s.1.uppercased()).monoLabel(8.5, color: Color(hex: 0xD9DCDD)).lineLimit(1)
                 }
@@ -298,7 +298,7 @@ struct PageHeader: View {
                 Text(title)
                     .font(.geist(size: titleSize, weight: .semibold)).tracking(-1.4).lineSpacing(-2)
                     .multilineTextAlignment(.leading)
-                    .foregroundColor(P.ink).lineLimit(3).minimumScaleFactor(0.55)
+                    .foregroundColor(P.onBanner).lineLimit(3).minimumScaleFactor(0.55)
             }
             if let subtitle, !subtitle.isEmpty {
                 Text(subtitle).monoLabel(9.5, color: Color(hex: 0xD9DCDD))

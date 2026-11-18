@@ -21,7 +21,7 @@ struct ScribblyApp: App {
     var body: some Scene {
         WindowGroup {
             AuthGate { RootView() }
-                .preferredColorScheme(.dark)
+                .preferredColorScheme(.light)
                 .modifier(AppTextSize())
                 // Anything that didn't finish uploading is retried here, so a
                 // recording can never be stranded by a crash, a dead network,
@@ -59,17 +59,19 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     }
 }
 
-// MARK: - Palette (Legacy Prism: deep navy, light ink, Legacy blues + cyan)
+// MARK: - Palette (Legacy Prism: white page, navy ink, blue gradient banners)
 
 enum P {
-    static let bg = Color(hex: 0x050B1F)
-    static let surface = Color(hex: 0x0B1630)
-    static let surface2 = Color(hex: 0x112042)
-    static let border = Color(hex: 0x1E3260)
-    static let divider = Color(hex: 0x14244A)
-    static let ink = Color(hex: 0xF3F2EE)
-    static let textSec = Color(hex: 0xA9BEE6)
-    static let textDim = Color(hex: 0x7F93BF)
+    static let bg = Color.white
+    static let surface = Color(hex: 0xF4F8FF)
+    static let surface2 = Color(hex: 0xEAF1FF)
+    static let border = Color(hex: 0xDCE6F7)
+    static let divider = Color(hex: 0xE8EEF8)
+    static let ink = Color(hex: 0x0B1A3A)
+    /// Text that sits on the blue banners and dark buttons.
+    static let onBanner = Color.white
+    static let textSec = Color(hex: 0x4A5B7E)
+    static let textDim = Color(hex: 0x8D9CBB)
     static let accent = Color(hex: 0x2B6BFF)      // copper
     static let tan = Color(hex: 0x5B8CFF)
     static let teal = Color(hex: 0x22D3EE)
@@ -110,7 +112,7 @@ struct RootView: View {
         // inside a tab page it never appeared (Upload "does nothing", build 220).
         .fullScreenCover(isPresented: $qaFailed) {
             NavigationStack { FailedSection().background(SinkyBackdrop()).navigationTitle("Didn't work") }
-                .preferredColorScheme(.dark)
+                .preferredColorScheme(.light)
         }
         // Videos and photos from the Photos library. Pick as many as you like,
         // tap Add — nothing starts until the picker is closed, then they upload

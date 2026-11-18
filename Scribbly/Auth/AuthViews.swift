@@ -20,7 +20,7 @@ struct AuthGate<Content: View>: View {
             else if !qa {
                 switch auth.phase {
                 case .loading:
-                    Color.black.ignoresSafeArea().overlay(Wordmark(size: 34))
+                    P.bg.ignoresSafeArea().overlay(Wordmark(size: 34))
                         .transition(.opacity)
                 case .signedOut:
                     SignInView().transition(.opacity)
@@ -70,7 +70,7 @@ struct SignInView: View {
 
     var body: some View {
         ZStack {
-            Color.black.ignoresSafeArea()
+            P.bg.ignoresSafeArea()
             VStack(spacing: 0) {
                 ZStack(alignment: .bottomLeading) {
                     FinsBackground()
@@ -298,7 +298,7 @@ struct OnboardingView: View {
 
     var body: some View {
         ZStack {
-            Color.black.ignoresSafeArea()
+            P.bg.ignoresSafeArea()
             VStack(alignment: .leading, spacing: 18) {
                 HStack {
                     Wordmark(size: 24)
@@ -329,7 +329,7 @@ struct OnboardingView: View {
                     Spacer()
                     Button { next() } label: {
                         Text(step == 2 ? (saving ? "Saving…" : "Start using Legacy Prism") : "Continue")
-                            .font(.geist(size: 17, weight: .semibold)).foregroundColor(.black)
+                            .font(.geist(size: 17, weight: .semibold)).foregroundColor(.white)
                             .padding(.horizontal, 26).frame(height: 52)
                             .background(Capsule().fill(P.ink))
                     }

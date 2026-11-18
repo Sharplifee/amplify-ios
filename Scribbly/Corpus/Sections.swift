@@ -790,7 +790,7 @@ struct IngestSection: View {
                             }
                         } label: {
                             Label("Retry \(progressFailed)", systemImage: "arrow.clockwise")
-                                .font(.geist(size: 12.5, weight: .semibold)).foregroundColor(.black)
+                                .font(.geist(size: 12.5, weight: .semibold)).foregroundColor(.white)
                                 .padding(.horizontal, 12).padding(.vertical, 6)
                                 .background(Capsule().fill(P.accent))
                         }

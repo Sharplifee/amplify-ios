@@ -151,7 +151,7 @@ struct GlassTabBar: View {
                     if busy {
                         ProgressView().tint(.black)
                     } else {
-                        Image(systemName: "checkmark").font(.system(size: 16, weight: .heavy)).foregroundColor(.black)
+                        Image(systemName: "checkmark").font(.system(size: 16, weight: .heavy)).foregroundColor(.white)
                     }
                 }
                 .contentShape(Circle())
@@ -295,12 +295,12 @@ struct GlassTabBar: View {
 
     @ViewBuilder private func discSymbol(finishing: Bool) -> some View {
         if finishing && rec.state == .finishing {
-            ProgressView().tint(Color.black)
+            ProgressView().tint(Color.white)
                 .transition(.opacity)
         } else if finishing {
             Image(systemName: "checkmark")
                 .font(.system(size: 24, weight: .heavy))
-                .foregroundColor(.black)
+                .foregroundColor(.white)
                 .transition(.scale(scale: 0.4).combined(with: .opacity))
         } else {
             Circle().fill(P.accent).frame(width: 20, height: 20)
