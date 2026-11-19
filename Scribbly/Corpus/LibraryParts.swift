@@ -171,10 +171,10 @@ struct TypeChipRow: View {
                     Text(countText).font(.geist(size: 11, design: .monospaced)).opacity(on ? 0.6 : 0.55)
                 }
             }
-            .foregroundColor(on ? .black : Color(hex: 0xD9DCDD))
+            .foregroundColor(on ? .white : P.textSec)
             .padding(.horizontal, 12).frame(height: 32)
             .background(on ? P.ink : Color.clear).clipShape(Capsule())
-            .overlay(Capsule().stroke(on ? Color.clear : Color(hex: 0x2E3236)))
+            .overlay(Capsule().stroke(on ? Color.clear : P.border))
             .contentShape(Capsule())
         }
         .buttonStyle(.plain)
@@ -213,7 +213,7 @@ struct FilterButtonLabel: View {
         ZStack(alignment: .topTrailing) {
             Image(systemName: "line.3.horizontal.decrease")
                 .font(.system(size: 16, weight: .semibold))
-                .foregroundColor(active > 0 ? P.accent : Color(hex: 0xD9DCDD))
+                .foregroundColor(active > 0 ? P.accent : P.textSec)
                 .frame(width: 44, height: 44)
                 .contentShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                 .sinkyGlass(RoundedRectangle(cornerRadius: 12, style: .continuous), interactive: true)

@@ -13,10 +13,10 @@ struct FilterSortRow: View {
                 ForEach(filters, id: \.self) { f in
                     Button { filter = f } label: {
                         Text(f).font(.geist(size: 13, weight: filter == f ? .semibold : .regular))
-                            .foregroundColor(filter == f ? .black : Color(hex: 0xD9DCDD))
+                            .foregroundColor(filter == f ? .white : P.textSec)
                             .padding(.horizontal, 12).frame(height: 32)
                             .background(filter == f ? P.ink : Color.clear).clipShape(Capsule())
-                            .overlay(Capsule().stroke(filter == f ? Color.clear : Color(hex: 0x2E3236)))
+                            .overlay(Capsule().stroke(filter == f ? Color.clear : P.border))
                             .contentShape(Capsule())
                     }
                     .buttonStyle(.plain)
@@ -47,7 +47,7 @@ struct SortMenu: View {
                 Text(sort).lineLimit(1).fixedSize()
                 Image(systemName: "chevron.down").font(.system(size: 10, weight: .semibold))
             }
-            .font(.geist(size: 13)).foregroundColor(Color(hex: 0xD9DCDD))
+            .font(.geist(size: 13)).foregroundColor(P.textSec)
             .padding(.horizontal, 12).frame(height: height)
             .contentShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
             .sinkyGlass(RoundedRectangle(cornerRadius: 12, style: .continuous), interactive: true)

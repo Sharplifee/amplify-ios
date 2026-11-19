@@ -7,6 +7,8 @@ import UserNotifications
 /// setup sit on top until they're done. QA runs (SCRIBBLY_* env) skip it.
 struct AuthGate<Content: View>: View {
     @ObservedObject private var auth = AuthSession.shared
+    /// Early access: no sign-in wall. One tap opens the app; signing in stays optional.
+    @AppStorage("prism_early_access") private var earlyAccess = false
     @ViewBuilder var content: () -> Content
     /// QA: any SCRIBBLY_* launch hook skips the gate; SCRIBBLY_AUTH=signin|onboarding shows that screen.
     private let forced = ProcessInfo.processInfo.environment["SCRIBBLY_AUTH"]
@@ -23,7 +25,7 @@ struct AuthGate<Content: View>: View {
                     P.bg.ignoresSafeArea().overlay(Wordmark(size: 34))
                         .transition(.opacity)
                 case .signedOut:
-                    SignInView().transition(.opacity)
+                    if !earlyAccess { EarlyAccessView { withAnimation(.easeInOut(duration: 0.35)) { earlyAccess = true } }.transition(.opacity) }
                 case .onboarding:
                     OnboardingView().transition(.move(edge: .trailing).combined(with: .opacity))
                 case .ready:
@@ -39,13 +41,57 @@ struct AuthGate<Content: View>: View {
     }
 }
 
-/// "Scribbly®" in the brand face.
+/// "Legacy Prism" in the brand face. Pass `onBanner` when it sits on the blue banner.
 struct Wordmark: View {
     var size: CGFloat = 30
+    var onBanner = false
     var body: some View {
-        HStack(alignment: .top, spacing: 1) {
-            Text("Legacy Prism").font(.custom("Geist-SemiBold", fixedSize: size)).foregroundColor(P.ink)
-            Text("®").font(.custom("Geist-Regular", fixedSize: size * 0.36)).foregroundColor(P.ink).padding(.top, size * 0.12)
+        Text("Legacy Prism").font(.custom("Geist-SemiBold", fixedSize: size))
+            .foregroundColor(onBanner ? P.onBanner : P.ink)
+    }
+}
+
+// MARK: - Early access (no sign-in wall)
+
+struct EarlyAccessView: View {
+    var enter: () -> Void
+    var body: some View {
+        ZStack {
+            P.bg.ignoresSafeArea()
+            VStack(spacing: 0) {
+                ZStack(alignment: .bottomLeading) {
+                    FinsBackground()
+                    VStack(alignment: .leading, spacing: 8) {
+                        Wordmark(size: 40, onBanner: true)
+                        Text("Every word. One library.").font(.geist(size: 17)).foregroundColor(P.onBanner.opacity(0.9))
+                    }
+                    .padding(22)
+                }
+                .frame(height: 300)
+                .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
+                .padding(.horizontal, 12)
+
+                Spacer(minLength: 20)
+                VStack(spacing: 14) {
+                    Text("Turn every call, keynote and doc into posts for every platform.")
+                        .font(.geist(size: 17)).foregroundColor(P.textSec)
+                        .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
+                    Button(action: enter) {
+                        Text("Early Access")
+                            .font(.geist(size: 17, weight: .semibold)).foregroundColor(.white)
+                            .frame(maxWidth: .infinity).frame(height: 54)
+                            .background(Capsule().fill(LinearGradient(colors: [Color(hex: 0x2B6BFF), Color(hex: 0x1FA8E8)], startPoint: .leading, endPoint: .trailing)))
+                            .shadow(color: Color(hex: 0x2B6BFF).opacity(0.3), radius: 14, y: 6)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityHint("Opens the app")
+                }
+                .padding(.horizontal, 20)
+                Spacer(minLength: 16)
+                Text("Early access build").font(.geist(size: 12)).foregroundColor(P.textDim)
+                    .padding(.bottom, 12)
+            }
+            .padding(.top, 8)
         }
     }
 }
@@ -75,8 +121,8 @@ struct SignInView: View {
                 ZStack(alignment: .bottomLeading) {
                     FinsBackground()
                     VStack(alignment: .leading, spacing: 8) {
-                        Wordmark(size: 40)
-                        Text("Every word. One library.").font(.geist(size: 17)).foregroundColor(P.ink.opacity(0.85))
+                        Wordmark(size: 40, onBanner: true)
+                        Text("Every word. One library.").font(.geist(size: 17)).foregroundColor(P.onBanner.opacity(0.9))
                     }
                     .padding(22)
                 }
@@ -117,7 +163,7 @@ struct SignInView: View {
                 Button { withAnimation(.easeInOut(duration: 0.2)) { signUp = up; auth.error = nil } } label: {
                     Text(up ? "Create account" : "Sign in")
                         .font(.geist(size: 15, weight: .semibold))
-                        .foregroundColor(on ? .black : P.textSec)
+                        .foregroundColor(on ? .white : P.textSec)
                         .frame(maxWidth: .infinity).frame(height: 40)
                         .background(Capsule().fill(on ? P.ink : Color.clear))
                 }
@@ -274,7 +320,7 @@ struct SignInView: View {
                 Text(title)
             }
             .font(.geist(size: 17, weight: .semibold))
-            .foregroundColor(primary ? .black : P.ink)
+            .foregroundColor(primary ? .white : P.ink)
             .frame(maxWidth: .infinity).frame(height: 52)
             .background(Capsule().fill(primary ? P.ink : P.surface2))
             .overlay(Capsule().stroke(primary ? Color.clear : P.border))
@@ -370,7 +416,7 @@ struct OnboardingView: View {
                     Button { withAnimation(.spring(response: 0.3, dampingFraction: 0.85)) { textSize = o.rawValue } } label: {
                         VStack(spacing: 6) {
                             Text("A").font(.custom("Geist-SemiBold", fixedSize: o.sample))
-                                .foregroundColor(on ? .black : P.ink)
+                                .foregroundColor(on ? .white : P.ink)
                                 .frame(maxWidth: .infinity).frame(height: 48)
                                 .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(on ? P.ink : P.surface2))
                                 .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(on ? Color.clear : P.border))

@@ -69,7 +69,7 @@ struct SettingsSection: View {
                                 } label: {
                                     VStack(spacing: 6) {
                                         Text("A").font(.custom("Geist-SemiBold", fixedSize: o.sample))
-                                            .foregroundColor(on ? .black : P.ink)
+                                            .foregroundColor(on ? .white : P.ink)
                                             .frame(maxWidth: .infinity).frame(height: 44)
                                             .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(on ? P.ink : P.surface2))
                                             .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(on ? Color.clear : P.border))

@@ -94,7 +94,7 @@ struct BatchProgressPanel: View {
         Button(action: action) {
             Label(title, systemImage: icon)
                 .font(.geist(size: 15, weight: .semibold))
-                .foregroundColor(primary ? .black : P.danger)
+                .foregroundColor(primary ? .white : P.danger)
                 .frame(maxWidth: .infinity).frame(height: 44)
                 .background(Capsule().fill(primary ? P.ink : P.surface2))
                 .overlay(Capsule().stroke(primary ? Color.clear : P.border))

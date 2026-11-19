@@ -683,7 +683,7 @@ struct TagChip: View {
     let text: String
     init(_ t: String) { text = t }
     var body: some View {
-        Text(text).font(.geist(size: 12)).foregroundColor(Color(hex: 0xD9DCDD))
+        Text(text).font(.geist(size: 12)).foregroundColor(P.textSec)
             .padding(.horizontal, 10).frame(height: 24)
             .background(P.surface2).clipShape(Capsule())
             .overlay(Capsule().stroke(P.edge))

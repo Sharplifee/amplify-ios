@@ -140,20 +140,19 @@ struct FinsBackground: View {
     var body: some View {
         ZStack {
             LinearGradient(stops: [
-                .init(color: Color(hex: 0x050E2B), location: 0),
-                .init(color: Color(hex: 0x0B2460), location: 0.34),
-                .init(color: Color(hex: 0x2B6BFF), location: 0.52),
-                .init(color: Color(hex: 0x2B6BFF), location: 0.78),
-                .init(color: Color(hex: 0x071233), location: 1),
+                .init(color: Color(hex: 0x1A47C9), location: 0),
+                .init(color: Color(hex: 0x2B6BFF), location: 0.38),
+                .init(color: Color(hex: 0x4F8BFF), location: 0.62),
+                .init(color: Color(hex: 0x38B6F0), location: 1),
             ], startPoint: UnitPoint(x: 0, y: 0.2), endPoint: UnitPoint(x: 1, y: 0.8))
             GeometryReader { geo in
                 Path { p in
                     var x: CGFloat = 7
                     while x < geo.size.width { p.addRect(CGRect(x: x, y: 0, width: 2, height: geo.size.height)); x += 9 }
                 }
-                .fill(Color.black)   // pure black: each stripe reads as a real gap
+                .fill(Color(hex: 0x0B2A7A).opacity(0.38))   // soft navy stripes keep the texture without darkening the banner
             }
-            LinearGradient(colors: [.clear, .black.opacity(0.72)], startPoint: UnitPoint(x: 0.5, y: 0.3), endPoint: .bottom)
+            LinearGradient(colors: [.clear, Color(hex: 0x0B1A3A).opacity(0.38)], startPoint: UnitPoint(x: 0.5, y: 0.45), endPoint: .bottom)   // just enough under the white titles
         }
     }
 }
@@ -206,7 +205,7 @@ struct SinkyBackdrop: View {
     var intensity: Double = 1
     var banner: Bool = true
     var body: some View {
-        Color.black
+        P.bg
             .ignoresSafeArea()
             .allowsHitTesting(false)
             .accessibilityHidden(true)
@@ -292,7 +291,7 @@ struct FinsStripes: View {
         Canvas { ctx, size in
             var x: CGFloat = 7
             while x < size.width {
-                ctx.fill(Path(CGRect(x: x, y: 0, width: 2, height: size.height)), with: .color(.black))
+                ctx.fill(Path(CGRect(x: x, y: 0, width: 2, height: size.height)), with: .color(Color(hex: 0x0B2A7A).opacity(0.38)))
                 x += 9
             }
         }
@@ -437,8 +436,8 @@ extension View {
     @MainActor func statusBand() -> some View {
         overlay(alignment: .top) {
             VStack(spacing: 0) {
-                Color.black.frame(height: SafeTop.value)
-                LinearGradient(colors: [.black, .black.opacity(0)], startPoint: .top, endPoint: .bottom)
+                P.bg.frame(height: SafeTop.value)
+                LinearGradient(colors: [P.bg, P.bg.opacity(0)], startPoint: .top, endPoint: .bottom)
                     .frame(height: 10)
             }
             .ignoresSafeArea(edges: .top)
