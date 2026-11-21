@@ -20,7 +20,8 @@ struct ScribblyApp: App {
     }
     var body: some Scene {
         WindowGroup {
-            AuthGate { RootView() }
+            // Same Prism as the website: the live site runs full screen here, so app and web never drift apart.
+            PrismWebApp()
                 .preferredColorScheme(.light)
                 .modifier(AppTextSize())
                 // Anything that didn't finish uploading is retried here, so a

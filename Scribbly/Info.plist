@@ -71,7 +71,9 @@
 	<key>NSFaceIDUsageDescription</key>
 	<string>Signs you in to Legacy Prism with Face ID.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Needed to record voice notes.</string>
+	<string>Records voice memos for Legacy Prism to turn into posts.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Takes photos and videos for Legacy Prism to turn into posts.</string>
 	<key>NSSupportsLiveActivities</key>
 	<true/>
 	<key>UIBackgroundModes</key>
