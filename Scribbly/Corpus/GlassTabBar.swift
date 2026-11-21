@@ -402,7 +402,7 @@ struct ShareReadyStrip: View {
         .buttonStyle(.plain)
         .accessibilityLabel("Ready to share to Instagram, TikTok, YouTube Shorts, LinkedIn and Text. Opens Prism.")
         .fullScreenCover(isPresented: $showPrism) {
-            PrismBrowser(url: URL(string: "https://getamplify.vercel.app/prism")!).ignoresSafeArea()
+            PrismBrowser(url: URL(string: "https://getamplify.vercel.app/prism?app=1")!).ignoresSafeArea()
         }
     }
 }
